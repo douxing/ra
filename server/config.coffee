@@ -2,7 +2,7 @@ serve = require 'koa-static'
 session = require 'koa-session'
 
 
-exports = module.exports = (app, config) -->
+exports = module.exports = (app, config) ->
 	# serve static files
 	app.use serve "#{config.root}/client"
 

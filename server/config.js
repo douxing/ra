@@ -5,8 +5,8 @@ serve = require('koa-static');
 
 session = require('koa-session');
 
-exports = module.exports = function*(app, config) {
+exports = module.exports = function(app, config) {
   app.use(serve("" + config.root + "/client"));
   app.keys = ['8 oclock every friday'];
-  app.use(session());
+  return app.use(session());
 };
