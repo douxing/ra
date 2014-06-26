@@ -1,5 +1,4 @@
 koa = require 'koa'
-session = require('koa-session')
 app = koa()
 
 configObj = 
@@ -7,8 +6,6 @@ configObj =
 
 require('server/config')(app, configObj)
 
-app.keys = ['8 oclock every friday']
-app.use(session())
 
 app.use( -->
   user = this.session.user || {name: 'a', value: 0}
