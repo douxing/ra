@@ -1,10 +1,11 @@
 koa = require 'koa'
-
 session = require('koa-session')
-
-
-
 app = koa()
+
+configObj = 
+	root: __dirname
+
+require('server/config')(app, configObj)
 
 app.keys = ['8 oclock every friday']
 app.use(session())

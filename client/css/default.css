@@ -1,0 +1,9 @@
+.nav a,
+.pagination a,
+.carousel a,
+.panel-title a {
+  cursor: pointer;
+}
+body {
+  padding-top: 50px;
+}
