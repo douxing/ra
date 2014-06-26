@@ -9,7 +9,7 @@ configObj = {
   root: __dirname
 };
 
-require('server/config')(app, configObj);
+require('./server/config')(app, configObj);
 
 app.use(function*() {
   var user;
