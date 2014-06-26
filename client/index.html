@@ -10,11 +10,13 @@
   <body data-ng-app="ra">
     <link rel="stylesheet" href="/css/default.css">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
-      <div class="navbar-header"><a ui-sref="main" class="navbar-brand">无名</a></div>
+      <div class="container">
+        <div class="navbar-header"><a ui-sref="main" class="navbar-brand">无名</a></div>
+      </div>
     </nav>
     <div data-ui-view="main" data-ng-show="stateChanging" class="main-ui-view">
       <div class="container">
-        <p>&nbsp;</p>
+        <p>内容</p>
       </div>
     </div>
     <script src="//cdn.bootcss.com/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
