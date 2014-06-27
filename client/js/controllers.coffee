@@ -1,0 +1,3 @@
+ra = angular.module 'ra'
+
+

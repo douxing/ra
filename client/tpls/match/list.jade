@@ -1,0 +1,15 @@
+.container
+  .row
+    table.table
+      thead
+        tr
+          th players\matchdays
+          th(data-ng-repeat='matchday in capsule.matchdays')
+            | 第
+            span(data-ng-bind='matchday.seq')
+            | 比赛日
+      tbody
+        tr(data-ng-repeat='user in capsule.users')
+          td(data-ng-bind='user.name')
+          td(data-ng-repeat='score_obj in user.scores')
+            span(data-ng-bind='score_obj.score')

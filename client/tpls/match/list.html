@@ -1,0 +1,19 @@
+
+<div class="container">
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>players\matchdays</th>
+          <th data-ng-repeat="matchday in capsule.matchdays">第<span data-ng-bind="matchday.seq"></span>比赛日</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="user in capsule.users">
+          <td data-ng-bind="user.name"></td>
+          <td data-ng-repeat="score_obj in user.scores"><span data-ng-bind="score_obj.score"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
