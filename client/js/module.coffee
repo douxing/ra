@@ -57,7 +57,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     views:
       'main':
         templateUrl: '/tpls/match/list.html'
-        controller: ['$scope', '$state', users, matchdays, ($scope, $state, users, matches) ->
+        controller: ['$scope', '$state', 'users', 'matchdays', ($scope, $state, users, matchdays) ->
           for user in users
             user.scores = for matchday in matchdays
               score = null

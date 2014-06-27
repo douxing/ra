@@ -79,7 +79,7 @@ ra.config([
         'main': {
           templateUrl: '/tpls/match/list.html',
           controller: [
-            '$scope', '$state', users, matchdays, function($scope, $state, users, matches) {
+            '$scope', '$state', 'users', 'matchdays', function($scope, $state, users, matchdays) {
               var marchday_score, matchday, s, score, user, _i, _len;
               for (_i = 0, _len = users.length; _i < _len; _i++) {
                 user = users[_i];
