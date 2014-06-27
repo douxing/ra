@@ -44,7 +44,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
             id: '3'
             score: '0.33'
           ]
-          ,
+        ,
           id: '2'
           seq: '2'
           date: '2014-06-27'

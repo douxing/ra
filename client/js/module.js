@@ -16,13 +16,13 @@ ra.config([
           controller: [
             '$state', '$window', function($state, $window) {
               return $window.setTimeout(function() {
-                return $state.go('matches');
+                return $state.go('match.list');
               }, 0);
             }
           ]
         }
       }
-    }).state("matches", {
+    }).state("match.list", {
       url: "/matches",
       resolve: {
         users: [
@@ -61,7 +61,8 @@ ra.config([
                     id: '3',
                     score: '0.33'
                   }
-                ],
+                ]
+              }, {
                 id: '2',
                 seq: '2',
                 date: '2014-06-27',
