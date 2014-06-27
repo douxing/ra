@@ -5,8 +5,20 @@ ra = angular.module('ra', ['ui.bootstrap', 'ui.router']);
 
 ra.config([
   "$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
+    var shiftTemplate;
+    shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>...</p><p>Shifting...</p></div></div>";
     $urlRouterProvider.otherwise("/");
-    return $stateProvider.state("match.list", {
+    return $stateProvider.state('index', {
+      url: '/',
+      views: {
+        template: shiftTemplate,
+        controller: [
+          '$state', function($state) {
+            return $state.go('match.list');
+          }
+        ]
+      }
+    }).state("match.list", {
       url: "/matches",
       resolve: {
         users: [
