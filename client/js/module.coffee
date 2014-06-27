@@ -11,10 +11,10 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
         template: shiftTemplate
         controller: ['$state', '$window', ($state, $window) ->
           $window.setTimeout ->
-            $state.go 'match.list'
+            $state.go 'matches'
           , 0
         ]
-  .state "match.list", 
+  .state "matches", 
     url: "/matches"
     resolve:
       users: ['$http', ($http) ->
