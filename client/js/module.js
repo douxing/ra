@@ -15,9 +15,9 @@ ra.config([
           template: shiftTemplate,
           controller: [
             '$state', '$window', function($state, $window) {
-              return $window.setImmediate(function() {
+              return $window.setTimeout(function() {
                 return $state.go('match.list');
-              });
+              }, 0);
             }
           ]
         }
