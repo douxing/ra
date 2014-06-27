@@ -9,8 +9,9 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     views:
       'main':
         template: shiftTemplate
-        controller: ['$state', ($state) ->
-          $state.go 'match.list'
+        controller: ['$state', '$window', ($state, $window) ->
+          $window.setImmediate ->
+            $state.go 'match.list'
         ]
   .state "match.list", 
     url: "/matches"

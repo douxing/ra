@@ -14,8 +14,10 @@ ra.config([
         'main': {
           template: shiftTemplate,
           controller: [
-            '$state', function($state) {
-              return $state.go('match.list');
+            '$state', '$window', function($state, $window) {
+              return $window.setImmediate(function() {
+                return $state.go('match.list');
+              });
             }
           ]
         }
