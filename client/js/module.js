@@ -52,13 +52,13 @@ ra.config([
                 date: '2014-06-20',
                 scores: [
                   {
-                    id: '1',
+                    user_id: '1',
                     score: '2.66'
                   }, {
-                    id: '2',
+                    user_id: '2',
                     score: '0.33'
                   }, {
-                    id: '3',
+                    user_id: '3',
                     score: '0.33'
                   }
                 ]
