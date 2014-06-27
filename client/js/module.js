@@ -16,13 +16,13 @@ ra.config([
           controller: [
             '$state', '$window', function($state, $window) {
               return $window.setTimeout(function() {
-                return $state.go('match.list');
+                return $state.go('matches');
               }, 0);
             }
           ]
         }
       }
-    }).state("match.list", {
+    }).state("matches", {
       url: "/matches",
       resolve: {
         users: [
