@@ -11,12 +11,14 @@ ra.config([
     return $stateProvider.state('index', {
       url: '/',
       views: {
-        template: shiftTemplate,
-        controller: [
-          '$state', function($state) {
-            return $state.go('match.list');
-          }
-        ]
+        'main': {
+          template: shiftTemplate,
+          controller: [
+            '$state', function($state) {
+              return $state.go('match.list');
+            }
+          ]
+        }
       }
     }).state("match.list", {
       url: "/matches",

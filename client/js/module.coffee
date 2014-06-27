@@ -7,10 +7,11 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
   $stateProvider.state 'index',
     url: '/'
     views:
-      template: shiftTemplate
-      controller: ['$state', ($state) ->
-        $state.go 'match.list'
-      ]
+      'main':
+        template: shiftTemplate
+        controller: ['$state', ($state) ->
+          $state.go 'match.list'
+        ]
   .state "match.list", 
     url: "/matches"
     resolve:
