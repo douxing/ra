@@ -82,3 +82,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 
 
 ]
+
+ra.run ['$location', ($location) ->
+  a = $location
+]

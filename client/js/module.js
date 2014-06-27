@@ -118,3 +118,10 @@ ra.config([
     });
   }
 ]);
+
+ra.run([
+  '$location', function($location) {
+    var a;
+    return a = $location;
+  }
+]);
