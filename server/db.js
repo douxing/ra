@@ -30,9 +30,22 @@ dbdisconnected = function(err) {
   return connect();
 };
 
-exports = module.exports = function() {
+exports = module.exports = function(app, config) {
+  var file, models_path, _i, _len, _ref, _results;
   mongoose.connection.on('connected', dbconnected);
   mongoose.connection.on('error', dberror);
   mongoose.connection.on('disconnected', dbdisconnected);
-  return connect();
+  connect();
+  models_path = "" + config.root + "/server/models";
+  _ref = fs.readdirSync(models_path);
+  _results = [];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    file = _ref[_i];
+    if (file.indexOf('.js') > 0) {
+      _results.push(require("" + models_path + "/" + file));
+    } else {
+      _results.push(void 0);
+    }
+  }
+  return _results;
 };

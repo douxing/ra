@@ -1,7 +1,7 @@
 ra = angular.module 'ra', ['ui.bootstrap', 'ui.router']
 
 ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterProvider) ->
-  shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>...</p><p>Shifting...</p></div></div>";
+  shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>";
   $urlRouterProvider.otherwise "/"
 
   $stateProvider.state 'index',

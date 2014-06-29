@@ -11,6 +11,26 @@ configObj = {
 
 require('./server/config')(app, configObj);
 
+require('./server/db')(app, configObj);
+
+app.use(function*(next) {
+  var err;
+  try {
+    yield next;
+  } catch (_error) {
+    err = _error;
+    this.app.emit('app.error', err, this);
+    if (err.name === 'ValidationError') {
+      return this.status = 400;
+    }
+    this.status = err.status || 500;
+  }
+});
+
+app.on('app.error', function(err) {
+  return console.error(err);
+});
+
 app.listen(3000);
 
 console.log('listening on port 3000');
