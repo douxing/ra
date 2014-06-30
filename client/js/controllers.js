@@ -2,3 +2,35 @@
 var ra;
 
 ra = angular.module('ra');
+
+ra.controller('NavBarController', [
+  '$scope', '$rootScope', '$modal', function($scope, $modal) {
+    return $scope.createUser = function() {
+      var modal;
+      modal = $modal.open({
+        templateUrl: '/tpls/user/new.html',
+        controller: [
+          '$scope', '$http', function($scope, $http) {
+            $scope.ok = function() {
+              return $http.post('users/add', {
+                name: '无名'
+              }).success(function(data) {
+                var t;
+                t = data;
+                return modal.close('ok');
+              }).error(function(data) {
+                var t;
+                t = data;
+                return modal.dismiss('error');
+              });
+            };
+            return $scope.cancel = function() {
+              return modeal.dismiss('cancel');
+            };
+          }
+        ]
+      });
+      return modal.result.then(function() {}, function() {});
+    };
+  }
+]);

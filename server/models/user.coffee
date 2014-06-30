@@ -10,3 +10,5 @@ UserSchema = new mongoose.Schema
     role:
       type: String
       default: ''
+
+module.exports = mongoose.model 'User', UserSchema

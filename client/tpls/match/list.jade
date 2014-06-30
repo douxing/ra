@@ -3,20 +3,7 @@
     table.table
       thead
         tr
-          th
-            .btn-group
-              button.btn.btn-primary.dropdown-toggle(type='button')
-                | 球员 
-                span.caret
-              ul.dropdown-menu(role='menu')
-                li: a() 新球员
-            .btn-group    
-              | &nbsp;\&nbsp;
-              button.btn.btn-primary.dropdown-toggle(type='button')
-                | 比赛日 
-                span.caret
-              ul.dropdown-menu(role='menu')
-                li: a() 新比赛日
+          th 球员 / 比赛日
           th(data-ng-repeat='matchday in capsule.matchdays')
             | 第
             span(data-ng-bind='matchday.seq')

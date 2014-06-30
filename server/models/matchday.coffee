@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 
-MatchDaySchema = new mongoose.Schema
+MatchdaySchema = new mongoose.Schema
   id: Number
   played_at: Date
   scores: [
@@ -9,3 +9,5 @@ MatchDaySchema = new mongoose.Schema
       ref: 'User'
     score: Number
   ]
+
+module.exports = mongoose.model 'Matchday', MatchdaySchema

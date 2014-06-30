@@ -4,22 +4,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle">球员 <span class="caret"></span></button>
-              <ul role="menu" class="dropdown-menu">
-                <li><a>新球员</a></li>
-              </ul>
-            </div>
-            <div class="btn-group">
-                 
-              &nbsp;\&nbsp;
-              <button type="button" class="btn btn-primary dropdown-toggle">比赛日 <span class="caret"></span></button>
-              <ul role="menu" class="dropdown-menu">
-                <li><a>新比赛日</a></li>
-              </ul>
-            </div>
-          </th>
+          <th>球员 / 比赛日</th>
           <th data-ng-repeat="matchday in capsule.matchdays">第<span data-ng-bind="matchday.seq"></span>比赛日</th>
         </tr>
       </thead>

@@ -1,3 +1,0 @@
-mongoose
-
-exports.list = --

@@ -31,6 +31,10 @@ app.on('app.error', function(err) {
   return console.error(err);
 });
 
+require('./controllers/user')(app, configObj);
+
+require('./controllers/matchday')(app, configObj);
+
 app.listen(3000);
 
 console.log('listening on port 3000');
