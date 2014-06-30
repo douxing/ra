@@ -1,3 +1,4 @@
+fs = require 'fs'
 mongoose = require 'mongoose'
 dbURI = 'mongodb://localhost/ra_dev'
 dbOptions = 

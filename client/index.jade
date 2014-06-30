@@ -12,6 +12,14 @@ html
       .container
         .navbar-header
           a.navbar-brand(ui-sref="main") 无名
+        ul.nav.navbar-nav
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown')
+              span 管理
+              b.caret
+            ul.dropdown-menu
+              li: a 新球员
+              li: a 新比赛日
 
     .main-ui-view(data-ui-view="main")
 
