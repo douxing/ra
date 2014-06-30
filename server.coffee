@@ -21,8 +21,8 @@ app.use (next) -->
 app.on 'app.error', (err) ->
   console.error err
 
-require('./controllers/user')(app, configObj)
-require('./controllers/matchday')(app, configObj)
+require('./server/controllers/user')(app, configObj)
+require('./server/controllers/matchday')(app, configObj)
 
 app.listen 3000
 
