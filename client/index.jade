@@ -9,7 +9,7 @@ html
   body(data-ng-app="ra")
     link(rel='stylesheet' href='/css/default.css')
     nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
-      .container
+      .container(data-ng-controller="NavBarController")
         .navbar-header
           a.navbar-brand(ui-sref="main") 无名
         ul.nav.navbar-nav
