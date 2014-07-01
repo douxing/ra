@@ -1,7 +1,7 @@
 ra = angular.module 'ra'
 
 ra.controller 'NavBarController', [
-  '$scope', '$rootScope', '$modal', ($scope, $modal) ->
+  '$scope', '$rootScope', '$modal', ($scope, $rootScope, $modal) ->
     $scope.addUser = ->
       modal = $modal.open
         templateUrl: '/tpls/user/new.html'

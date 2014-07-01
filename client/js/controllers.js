@@ -4,7 +4,7 @@ var ra;
 ra = angular.module('ra');
 
 ra.controller('NavBarController', [
-  '$scope', '$rootScope', '$modal', function($scope, $modal) {
+  '$scope', '$rootScope', '$modal', function($scope, $rootScope, $modal) {
     $scope.addUser = function() {
       var modal;
       modal = $modal.open({
