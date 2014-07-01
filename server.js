@@ -19,6 +19,7 @@ app.use(function*(next) {
     yield next;
   } catch (_error) {
     err = _error;
+    console.log("error: " + err);
     this.app.emit('app.error', err, this);
     if (err.name === 'ValidationError') {
       return this.status = 400;
@@ -28,7 +29,7 @@ app.use(function*(next) {
 });
 
 app.on('app.error', function(err) {
-  return console.error(err);
+  return console.error("app.error: " + err);
 });
 
 require('./server/controllers/user')(app, configObj);

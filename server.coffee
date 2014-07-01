@@ -11,6 +11,7 @@ app.use (next) -->
   try
     yield next
   catch err
+    console.log "error: #{err}"
     @app.emit 'app.error', err, this
     if err.name is 'ValidationError'
       return @status = 400
@@ -19,7 +20,7 @@ app.use (next) -->
   
 
 app.on 'app.error', (err) ->
-  console.error err
+  console.error "app.error: #{err}"
 
 # routes
 require('./server/controllers/user')(app, configObj)

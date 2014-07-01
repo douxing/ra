@@ -14,13 +14,13 @@ ra.controller('NavBarController', [
             $scope.ok = function() {
               return $http.post('users/add', {
                 name: '无名'
-              }).success(function(data) {
+              }).success(function(data, status, headers, config) {
                 var t;
-                t = data;
+                t = [data, status, headers, config];
                 return modal.close('ok');
-              }).error(function(data) {
+              }).error(function(data, status, headers, config) {
                 var t;
-                t = data;
+                t = [data, status, headers, config];
                 return modal.dismiss('error');
               });
             };
@@ -40,13 +40,13 @@ ra.controller('NavBarController', [
         controller: [
           '$scope', '$http', function($scope, $http) {
             $scope.ok = function() {
-              return $http.post('matchdays/add').success(function(data) {
+              return $http.post('matchdays/add').success(function(data, status, headers, config) {
                 var t;
-                t = data;
+                t = [data, status, headers, config];
                 return modal.close('ok');
-              }).error(function(data) {
+              }).error(function(data, status, headers, config) {
                 var t;
-                t = data;
+                t = [data, status, headers, config];
                 return modal.dismiss('error');
               });
             };

@@ -9,11 +9,11 @@ ra.controller 'NavBarController', [
           $scope.ok = ->
             $http.post 'users/add', 
               name: '无名'
-            .success (data) ->
-              t = data
+            .success (data, status, headers, config) ->
+              t = [data, status, headers, config]
               modal.close 'ok'
-            .error (data) ->
-              t = data
+            .error (data, status, headers, config) ->
+              t = [data, status, headers, config]
               modal.dismiss 'error'
           $scope.cancel = ->
             modal.dismiss 'cancel'
@@ -31,11 +31,11 @@ ra.controller 'NavBarController', [
         controller: ['$scope', '$http', ($scope, $http) ->
           $scope.ok = ->
             $http.post 'matchdays/add'
-            .success (data) ->
-              t = data
+            .success (data, status, headers, config) ->
+              t = [data, status, headers, config]
               modal.close 'ok'
-            .error (data) ->
-              t = data
+            .error (data, status, headers, config) ->
+              t = [data, status, headers, config]
               modal.dismiss 'error'
           $scope.cancel = ->
             modal.dismiss 'cancel'
