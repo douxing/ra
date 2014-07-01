@@ -18,60 +18,21 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     url: "/matches"
     resolve:
       users: ['$http', ($http) ->
-        users = [
-          id: '1'
-          name: 'one'
-        ,
-          id: '2'
-          name: 'two'
-        ,
-          id: '3'
-          name: 'three'
-        ]
+        $http.get '/users'
       ],
       matchdays: ['$http', ($http) ->
-        matchdays = [
-          id: '1'
-          seq: '1'
-          date: '2014-06-20'
-          scores: [
-            user_id: '1'
-            score: '2.66'
-          ,
-            user_id: '2'
-            score: '0.33'
-          ,
-            user_id: '3'
-            score: '0.33'
-          ]
-        ,
-          id: '2'
-          seq: '2'
-          date: '2014-06-27'
-          scores: [
-            user_id: '1'
-            score: '2.0'
-          ,
-            user_id: '2'
-            score: '1.0'
-          ]
-        ]
+        $http.get '/matchdays'
+        .then (data) ->
+          matchdays = {}
+          for d in data.data
+            matchdays[d.player] = d.score
+          matchdays 
       ]
     views:
       'main':
         templateUrl: '/tpls/match/list.html'
         controller: ['$rootScope', '$state', 'users', 'matchdays', ($rootScope, $state, users, matchdays) ->
-          for user in users
-            user.scores = for matchday in matchdays
-              score = null
-              for s in matchday.scores
-                if s.user_id is user.id
-                  score = s.score
-                  break
-              marchday_score =
-                user_id: user.id
-                matchday_id: matchday.id
-                score: score
+          user.matchdays = matchdays for user in users
 
           $rootScope.capsule =
             users: users

@@ -27,56 +27,21 @@ ra.config([
       resolve: {
         users: [
           '$http', function($http) {
-            var users;
-            return users = [
-              {
-                id: '1',
-                name: 'one'
-              }, {
-                id: '2',
-                name: 'two'
-              }, {
-                id: '3',
-                name: 'three'
-              }
-            ];
+            return $http.get('/users');
           }
         ],
         matchdays: [
           '$http', function($http) {
-            var matchdays;
-            return matchdays = [
-              {
-                id: '1',
-                seq: '1',
-                date: '2014-06-20',
-                scores: [
-                  {
-                    user_id: '1',
-                    score: '2.66'
-                  }, {
-                    user_id: '2',
-                    score: '0.33'
-                  }, {
-                    user_id: '3',
-                    score: '0.33'
-                  }
-                ]
-              }, {
-                id: '2',
-                seq: '2',
-                date: '2014-06-27',
-                scores: [
-                  {
-                    user_id: '1',
-                    score: '2.0'
-                  }, {
-                    user_id: '2',
-                    score: '1.0'
-                  }
-                ]
+            return $http.get('/matchdays').then(function(data) {
+              var d, matchdays, _i, _len, _ref;
+              matchdays = {};
+              _ref = data.data;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                d = _ref[_i];
+                matchdays[d.player] = d.score;
               }
-            ];
+              return matchdays;
+            });
           }
         ]
       },
@@ -85,31 +50,10 @@ ra.config([
           templateUrl: '/tpls/match/list.html',
           controller: [
             '$rootScope', '$state', 'users', 'matchdays', function($rootScope, $state, users, matchdays) {
-              var marchday_score, matchday, s, score, user, _i, _len;
+              var user, _i, _len;
               for (_i = 0, _len = users.length; _i < _len; _i++) {
                 user = users[_i];
-                user.scores = (function() {
-                  var _j, _k, _len1, _len2, _ref, _results;
-                  _results = [];
-                  for (_j = 0, _len1 = matchdays.length; _j < _len1; _j++) {
-                    matchday = matchdays[_j];
-                    score = null;
-                    _ref = matchday.scores;
-                    for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
-                      s = _ref[_k];
-                      if (s.user_id === user.id) {
-                        score = s.score;
-                        break;
-                      }
-                    }
-                    _results.push(marchday_score = {
-                      user_id: user.id,
-                      matchday_id: matchday.id,
-                      score: score
-                    });
-                  }
-                  return _results;
-                })();
+                user.matchdays = matchdays;
               }
               $rootScope.capsule = {
                 users: users,

@@ -11,5 +11,5 @@
       tbody
         tr(data-ng-repeat='user in capsule.users')
           td(data-ng-bind='user.name')
-          td(data-ng-repeat='score_obj in user.scores')
-            span(data-ng-bind='score_obj.score')
+          td(data-ng-repeat='matchday in user.matchdays')
+            span(data-ng-bind='matchday[user._id]')
