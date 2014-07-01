@@ -26,7 +26,6 @@ module.exports = (app, config) ->
 
     matchday = new Matchday body
     matchday.id = yield Matchday.count().exec()
-    matchday.id += 1
     matchday.save = thunkify(matchday.save)
     yield matchday.save()
     @status = 201

@@ -27,20 +27,22 @@ ra.config([
       resolve: {
         users: [
           '$http', function($http) {
-            return $http.get('/users');
+            return $http.get('/users').then(function(data) {
+              return data.data;
+            });
           }
         ],
         matchdays: [
           '$http', function($http) {
             return $http.get('/matchdays').then(function(data) {
-              var d, matchdays, _i, _len, _ref;
-              matchdays = {};
+              var days, matchday, _i, _len, _ref;
+              days = [];
               _ref = data.data;
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                d = _ref[_i];
-                matchdays[d.player] = d.score;
+                matchday = _ref[_i];
+                days[matchday.id] = matchday;
               }
-              return matchdays;
+              return days;
             });
           }
         ]

@@ -19,14 +19,16 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     resolve:
       users: ['$http', ($http) ->
         $http.get '/users'
+        .then (data) ->
+          data.data
       ],
       matchdays: ['$http', ($http) ->
         $http.get '/matchdays'
         .then (data) ->
-          matchdays = {}
-          for d in data.data
-            matchdays[d.player] = d.score
-          matchdays 
+          days = []
+          for matchday in data.data
+            days[matchday.id] = matchday
+          days
       ]
     views:
       'main':

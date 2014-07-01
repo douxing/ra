@@ -4,7 +4,7 @@ var ra;
 ra = angular.module('ra');
 
 ra.controller('NavBarController', [
-  '$scope', '$rootScope', '$modal', function($scope, $rootScope, $modal) {
+  '$scope', '$state', '$modal', function($scope, $state, $modal) {
     $scope.addUser = function() {
       var modal;
       modal = $modal.open({
@@ -31,7 +31,9 @@ ra.controller('NavBarController', [
         ],
         backdrop: 'static'
       });
-      return modal.result.then(function() {}, function() {});
+      return modal.result.then(function() {
+        return $state.reload();
+      }, function() {});
     };
     return $scope.addMatchday = function() {
       var modal;
@@ -57,7 +59,9 @@ ra.controller('NavBarController', [
         ],
         backdrop: 'static'
       });
-      return modal.result.then(function() {}, function() {});
+      return modal.result.then(function() {
+        return $state.reload();
+      }, function() {});
     };
   }
 ]);

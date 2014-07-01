@@ -1,7 +1,7 @@
 ra = angular.module 'ra'
 
 ra.controller 'NavBarController', [
-  '$scope', '$rootScope', '$modal', ($scope, $rootScope, $modal) ->
+  '$scope', '$state', '$modal', ($scope, $state, $modal) ->
     $scope.addUser = ->
       modal = $modal.open
         templateUrl: '/tpls/user/new.html'
@@ -21,7 +21,7 @@ ra.controller 'NavBarController', [
         backdrop: 'static'
 
       modal.result.then ->
-        return
+        $state.reload()
       , ->
         return
 
@@ -43,7 +43,7 @@ ra.controller 'NavBarController', [
         backdrop: 'static'
 
       modal.result.then ->
-        return
+        $state.reload()
       , ->
         return
 
