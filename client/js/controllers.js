@@ -25,7 +25,7 @@ ra.controller('NavBarController', [
               });
             };
             return $scope.cancel = function() {
-              return modeal.dismiss('cancel');
+              return modal.dismiss('cancel');
             };
           }
         ],
@@ -51,7 +51,7 @@ ra.controller('NavBarController', [
               });
             };
             return $scope.cancel = function() {
-              return modeal.dismiss('cancel');
+              return modal.dismiss('cancel');
             };
           }
         ],
