@@ -36,11 +36,10 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
         controller: ['$rootScope', '$state', 'users', 'matchdays', ($rootScope, $state, users, matchdays) ->
           user.matchdays = matchdays for user in users
 
-          $rootScope.capsule =
-            users: users
-            matchdays: matchdays
-
-          return
+          $rootScope.capsule.users.splice 0, $rootScope.capsule.users.length
+          $rootScope.capsule.users.push user for user in users
+          $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
+          $rootScope.capsule.matchdays.push matchday for matchday in matchdays
         ]
     auth: true
 
@@ -49,6 +48,10 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 
 ]
 
-ra.run ['$location', ($location) ->
+ra.run ['$rootScope', '$location', ($rootScope, $location) ->
+  $rootScope.capsule = 
+    users: []
+    matchdays: []
+
   a = $location
 ]

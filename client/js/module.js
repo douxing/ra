@@ -52,15 +52,23 @@ ra.config([
           templateUrl: '/tpls/match/list.html',
           controller: [
             '$rootScope', '$state', 'users', 'matchdays', function($rootScope, $state, users, matchdays) {
-              var user, _i, _len;
+              var matchday, user, _i, _j, _k, _len, _len1, _len2, _results;
               for (_i = 0, _len = users.length; _i < _len; _i++) {
                 user = users[_i];
                 user.matchdays = matchdays;
               }
-              $rootScope.capsule = {
-                users: users,
-                matchdays: matchdays
-              };
+              $rootScope.capsule.users.splice(0, $rootScope.capsule.users.length);
+              for (_j = 0, _len1 = users.length; _j < _len1; _j++) {
+                user = users[_j];
+                $rootScope.capsule.users.push(user);
+              }
+              $rootScope.capsule.matchdays.splice(0, $rootScope.capsule.matchdays.length);
+              _results = [];
+              for (_k = 0, _len2 = matchdays.length; _k < _len2; _k++) {
+                matchday = matchdays[_k];
+                _results.push($rootScope.capsule.matchdays.push(matchday));
+              }
+              return _results;
             }
           ]
         }
@@ -71,8 +79,12 @@ ra.config([
 ]);
 
 ra.run([
-  '$location', function($location) {
+  '$rootScope', '$location', function($rootScope, $location) {
     var a;
+    $rootScope.capsule = {
+      users: [],
+      matchdays: []
+    };
     return a = $location;
   }
 ]);
