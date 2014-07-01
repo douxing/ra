@@ -7,7 +7,7 @@
     "koa": "^0.8.0",
     "koa-route": "^1.1.4",
     "koa-static": "^1.4.5",
-    "co-busboy": "^1.0.2",
+    "co-body": "^0.0.2",
     "koa-session": "^2.0.0",
     "mongoose": "~3.8.12",
     "thunkify": "~2.1.1"
