@@ -25,7 +25,7 @@ module.exports = function(app, config) {
     matchdays = yield Matchday.find().exec();
     this.body = matchdays;
   }));
-  return app.use(route.post('matchdays/add', function*(req, res) {
+  return app.use(route.post('/matchdays/add', function*(req, res) {
     var body, matchday;
     console.log("about to route: POST matchdays/add");
     body = yield parse(this);

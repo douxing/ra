@@ -12,7 +12,7 @@ ra.controller('NavBarController', [
         controller: [
           '$scope', '$http', function($scope, $http) {
             $scope.ok = function() {
-              return $http.post('users/add', {
+              return $http.post('/users/add', {
                 name: '无名'
               }).success(function(data, status, headers, config) {
                 var t;
@@ -40,7 +40,7 @@ ra.controller('NavBarController', [
         controller: [
           '$scope', '$http', function($scope, $http) {
             $scope.ok = function() {
-              return $http.post('matchdays/add').success(function(data, status, headers, config) {
+              return $http.post('/matchdays/add').success(function(data, status, headers, config) {
                 var t;
                 t = [data, status, headers, config];
                 return modal.close('ok');

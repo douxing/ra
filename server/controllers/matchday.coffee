@@ -18,7 +18,7 @@ module.exports = (app, config) ->
     matchdays = yield Matchday.find().exec()
     @body = matchdays
 
-  app.use route.post 'matchdays/add', (req, res) -->
+  app.use route.post '/matchdays/add', (req, res) -->
     console.log "about to route: POST matchdays/add"
     body = yield parse @
 

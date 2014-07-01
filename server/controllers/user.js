@@ -23,7 +23,7 @@ module.exports = function(app, config) {
     users = yield User.find().exec();
     this.body = users;
   }));
-  return app.use(route.post('users/add', function*(req, res) {
+  return app.use(route.post('/users/add', function*(req, res) {
     var body, user;
     console.log("about to route: POST /users/add");
     body = yield parse(this);

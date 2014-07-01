@@ -16,7 +16,7 @@ module.exports = (app, config) ->
     users = yield User.find().exec()
     @body = users
 
-  app.use route.post 'users/add', (req, res) -->
+  app.use route.post '/users/add', (req, res) -->
     console.log "about to route: POST /users/add"
     body = yield parse @
 
