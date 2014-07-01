@@ -3,6 +3,8 @@ route    = require 'koa-route'
 thunkify = require 'thunkify'
 parse    = require 'co-body'
 
+util = require 'util'
+
 models_path = "#{__dirname}/../models"
 
 Matchday = require "#{models_path}/matchday"
