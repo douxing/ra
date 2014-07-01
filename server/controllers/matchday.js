@@ -17,7 +17,7 @@ Matchday = require("" + models_path + "/matchday");
 
 User = require("" + models_path + "/user");
 
-moduls.exports = function(app) {
+module.exports = function(app) {
   app.use(route.get('/matchdays', function*(req, res) {
     var matchdays;
     matchdays = yield Matchday.find().exec();
