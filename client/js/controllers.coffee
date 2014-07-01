@@ -21,7 +21,7 @@ ra.controller 'NavBarController', [
         backdrop: 'static'
 
       modal.result.then ->
-        $state.reload()
+        $state.transitionTo $state.current, {}, { reload: true, inherit: true, notify: true }
       , ->
         return
 
@@ -43,7 +43,7 @@ ra.controller 'NavBarController', [
         backdrop: 'static'
 
       modal.result.then ->
-        $state.reload()
+        $state.transitionTo $state.current, {}, { reload: true, inherit: true, notify: true }
       , ->
         return
 

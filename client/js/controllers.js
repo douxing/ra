@@ -32,7 +32,11 @@ ra.controller('NavBarController', [
         backdrop: 'static'
       });
       return modal.result.then(function() {
-        return $state.reload();
+        return $state.transitionTo($state.current, {}, {
+          reload: true,
+          inherit: true,
+          notify: true
+        });
       }, function() {});
     };
     return $scope.addMatchday = function() {
@@ -60,7 +64,11 @@ ra.controller('NavBarController', [
         backdrop: 'static'
       });
       return modal.result.then(function() {
-        return $state.reload();
+        return $state.transitionTo($state.current, {}, {
+          reload: true,
+          inherit: true,
+          notify: true
+        });
       }, function() {});
     };
   }
