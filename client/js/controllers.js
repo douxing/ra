@@ -5,7 +5,7 @@ ra = angular.module('ra');
 
 ra.controller('NavBarController', [
   '$scope', '$rootScope', '$modal', function($scope, $modal) {
-    return $scope.createUser = function() {
+    $scope.addUser = function() {
       var modal;
       modal = $modal.open({
         templateUrl: '/tpls/user/new.html',
@@ -15,6 +15,31 @@ ra.controller('NavBarController', [
               return $http.post('users/add', {
                 name: '无名'
               }).success(function(data) {
+                var t;
+                t = data;
+                return modal.close('ok');
+              }).error(function(data) {
+                var t;
+                t = data;
+                return modal.dismiss('error');
+              });
+            };
+            return $scope.cancel = function() {
+              return modeal.dismiss('cancel');
+            };
+          }
+        ]
+      });
+      return modal.result.then(function() {}, function() {});
+    };
+    return $scope.addMatchday = function() {
+      var modal;
+      modal = $modal.open({
+        templateUrl: '/tpls/matchday/new.html',
+        controller: [
+          '$scope', '$http', function($scope, $http) {
+            $scope.ok = function() {
+              return $http.post('matchday/add').success(function(data) {
                 var t;
                 t = data;
                 return modal.close('ok');
