@@ -7,8 +7,8 @@ util = require 'util'
 
 models_path = "#{__dirname}/../models"
 
-Matchday = require '#{models_path}/matchday'
-User     = require '#{models_path}/user'
+Matchday = require "#{models_path}/matchday"
+User     = require "#{models_path}/user"
 
 moduls.exports = (app) ->
   app.use route.get '/matchdays', (req, res) -->

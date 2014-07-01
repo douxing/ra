@@ -13,9 +13,9 @@ util = require('util');
 
 models_path = "" + __dirname + "/../models";
 
-Matchday = require('#{models_path}/matchday');
+Matchday = require("" + models_path + "/matchday");
 
-User = require('#{models_path}/user');
+User = require("" + models_path + "/user");
 
 moduls.exports = function(app) {
   app.use(route.get('/matchdays', function*(req, res) {
