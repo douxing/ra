@@ -28,7 +28,8 @@ ra.controller('NavBarController', [
               return modeal.dismiss('cancel');
             };
           }
-        ]
+        ],
+        backdrop: 'static'
       });
       return modal.result.then(function() {}, function() {});
     };
@@ -53,7 +54,8 @@ ra.controller('NavBarController', [
               return modeal.dismiss('cancel');
             };
           }
-        ]
+        ],
+        backdrop: 'static'
       });
       return modal.result.then(function() {}, function() {});
     };

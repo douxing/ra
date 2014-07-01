@@ -18,6 +18,7 @@ ra.controller 'NavBarController', [
           $scope.cancel = ->
             modeal.dismiss 'cancel'
         ]
+        backdrop: 'static'
 
       modal.result.then ->
         return
@@ -39,6 +40,7 @@ ra.controller 'NavBarController', [
           $scope.cancel = ->
             modeal.dismiss 'cancel'
         ]
+        backdrop: 'static'
 
       modal.result.then ->
         return
