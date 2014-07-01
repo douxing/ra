@@ -28,7 +28,8 @@ moduls.exports = function(app) {
     body = yield parse(this);
     console.log("matchday body: " + (util.inspect(body)));
     matchday = new Matchday(body);
-    matchday.id = 1 + yield Matchday.count().exec();
+    matchday.id = yield Matchday.count().exec();
+    matchday.id += 1;
     matchday.save = thunkify(matchday.save);
     yield matchday.save;
     this.status = 201;

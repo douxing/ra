@@ -21,7 +21,8 @@ moduls.exports = (app) ->
     console.log "matchday body: #{util.inspect body}"
 
     matchday = new Matchday body
-    matchday.id = 1 + yield Matchday.count().exec()
+    matchday.id = yield Matchday.count().exec()
+    matchday.id += 1
     matchday.save = thunkify(matchday.save)
     yield matchday.save
     @status = 201
