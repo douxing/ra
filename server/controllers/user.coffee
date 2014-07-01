@@ -8,7 +8,9 @@ models_path = "#{__dirname}/../models"
 Matchday = require "#{models_path}/matchday"
 User     = require "#{models_path}/user"
 
-module.exports = (app) ->
+module.exports = (app, config) ->
+  console.log 'about to add routes for users...'
+
   app.use route.get '/users', (req, res) -->
     console.log "about to route: GET /matchdays"
     users = yield User.find().exec()
@@ -23,6 +25,7 @@ module.exports = (app) ->
     user = new User body
     user.name = 'noname' unless user.name
     user.save = thunkify(user.save)
-    yield user.save
+    yield user.save()
     @status = 201
     @body = user
+

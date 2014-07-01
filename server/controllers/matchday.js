@@ -17,7 +17,8 @@ Matchday = require("" + models_path + "/matchday");
 
 User = require("" + models_path + "/user");
 
-module.exports = function(app) {
+module.exports = function(app, config) {
+  console.log('about to add routes for matchdays...');
   app.use(route.get('/matchdays', function*(req, res) {
     var matchdays;
     console.log("about to route: GET /matchdays");

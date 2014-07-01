@@ -15,7 +15,8 @@ Matchday = require("" + models_path + "/matchday");
 
 User = require("" + models_path + "/user");
 
-module.exports = function(app) {
+module.exports = function(app, config) {
+  console.log('about to add routes for users...');
   app.use(route.get('/users', function*(req, res) {
     var users;
     console.log("about to route: GET /matchdays");
@@ -32,7 +33,7 @@ module.exports = function(app) {
       user.name = 'noname';
     }
     user.save = thunkify(user.save);
-    yield user.save;
+    yield user.save();
     this.status = 201;
     this.body = user;
   }));

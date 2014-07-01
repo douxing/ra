@@ -10,7 +10,9 @@ models_path = "#{__dirname}/../models"
 Matchday = require "#{models_path}/matchday"
 User     = require "#{models_path}/user"
 
-module.exports = (app) ->
+module.exports = (app, config) ->
+  console.log 'about to add routes for matchdays...'
+
   app.use route.get '/matchdays', (req, res) -->
     console.log "about to route: GET /matchdays"
     matchdays = yield Matchday.find().exec()
@@ -29,3 +31,4 @@ module.exports = (app) ->
     yield matchday.save
     @status = 201
     @body = matchday
+
