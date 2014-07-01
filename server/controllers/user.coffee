@@ -8,7 +8,7 @@ models_path = "#{__dirname}/../models"
 Matchday = require "#{models_path}/matchday"
 User     = require "#{models_path}/user"
 
-moduls.exports = (app) ->
+module.exports = (app) ->
   app.use route.get '/users', (req, res) -->
     users = yield User.find().exec()
     @body = users
