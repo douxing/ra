@@ -34,7 +34,7 @@ module.exports = function(app, config) {
     matchday.id = yield Matchday.count().exec();
     matchday.id += 1;
     matchday.save = thunkify(matchday.save);
-    yield matchday.save;
+    yield matchday.save();
     this.status = 201;
     this.body = matchday;
   }));
