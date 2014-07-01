@@ -40,7 +40,7 @@ ra.controller('NavBarController', [
         controller: [
           '$scope', '$http', function($scope, $http) {
             $scope.ok = function() {
-              return $http.post('matchday/add').success(function(data) {
+              return $http.post('matchdays/add').success(function(data) {
                 var t;
                 t = data;
                 return modal.close('ok');

@@ -10,10 +10,12 @@ User     = require "#{models_path}/user"
 
 module.exports = (app) ->
   app.use route.get '/users', (req, res) -->
+    console.log "about to route: GET /matchdays"
     users = yield User.find().exec()
     @body = users
 
   app.use route.post 'users/add', (req, res) -->
+    console.log "about to route: POST /users/add"
     body = yield parse @
 
     console.log "user body: #{util.inspect body}"

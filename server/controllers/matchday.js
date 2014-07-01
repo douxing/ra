@@ -20,11 +20,13 @@ User = require("" + models_path + "/user");
 module.exports = function(app) {
   app.use(route.get('/matchdays', function*(req, res) {
     var matchdays;
+    console.log("about to route: GET /matchdays");
     matchdays = yield Matchday.find().exec();
     this.body = matchdays;
   }));
   return app.use(route.post('matchdays/add', function*(req, res) {
     var body, matchday;
+    console.log("about to route: POST matchdays/add");
     body = yield parse(this);
     console.log("matchday body: " + (util.inspect(body)));
     matchday = new Matchday(body);

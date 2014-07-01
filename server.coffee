@@ -21,6 +21,7 @@ app.use (next) -->
 app.on 'app.error', (err) ->
   console.error err
 
+# routes
 require('./server/controllers/user')(app, configObj)
 require('./server/controllers/matchday')(app, configObj)
 

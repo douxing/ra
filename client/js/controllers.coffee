@@ -30,7 +30,7 @@ ra.controller 'NavBarController', [
         templateUrl: '/tpls/matchday/new.html'
         controller: ['$scope', '$http', ($scope, $http) ->
           $scope.ok = ->
-            $http.post 'matchday/add'
+            $http.post 'matchdays/add'
             .success (data) ->
               t = data
               modal.close 'ok'
