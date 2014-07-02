@@ -48,6 +48,10 @@ ra.controller 'NavBarController', [
         return
 
     $scope.viewMatches = (edit) ->
-      $state.go 'matches', 
+      $state.transitionTo 'matches', 
         edit: edit
+      , 
+        reload: true
+        inherit: true
+        notify: true
 ]
