@@ -51,9 +51,25 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 ]
 
 ra.run ['$rootScope', '$location', ($rootScope, $location) ->
-  $rootScope.capsule = 
+  $rootScope.capsule =
+    state_changing: false
+    edit: false
     users: []
     matchdays: []
 
-  a = $location
+  $rootScope.$on '$stateChangeStart', (event, toState, toParams, fromState, fromParams) ->
+    t = [event, toState, toParams, fromState, fromParams]
+    $rootScope.state_changing = true
+
+  $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams) ->
+    t = [event, toState, toParams, fromState, fromParams].
+    $rootScope.state_changing = false
+
+  $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->
+    t = [event, toState, toParams, fromState, fromParams]
+    $rootScope.state_changing = false
+
+  $rootScope.$on '$stateNotFound', (event, toState, toParams, fromState, fromParams) ->
+    t = [event, toState, toParams, fromState, fromParams]
+    $rootScope.state_changing = false
 ]

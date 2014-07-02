@@ -79,11 +79,30 @@ ra.config([
 
 ra.run([
   '$rootScope', '$location', function($rootScope, $location) {
-    var a;
     $rootScope.capsule = {
+      state_changing: false,
+      edit: false,
       users: [],
       matchdays: []
     };
-    return a = $location;
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      var t;
+      t = [event, toState, toParams, fromState, fromParams];
+      return $rootScope.state_changing = true;
+    });
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+      var t;
+      return t = [event, toState, toParams, fromState, fromParams].$rootScope.state_changing = false;
+    });
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      var t;
+      t = [event, toState, toParams, fromState, fromParams];
+      return $rootScope.state_changing = false;
+    });
+    return $rootScope.$on('$stateNotFound', function(event, toState, toParams, fromState, fromParams) {
+      var t;
+      t = [event, toState, toParams, fromState, fromParams];
+      return $rootScope.state_changing = false;
+    });
   }
 ]);
