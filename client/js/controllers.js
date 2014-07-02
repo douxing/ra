@@ -72,12 +72,10 @@ ra.controller('NavBarController', [
       }, function() {});
     };
     return $scope.viewMatches = function(edit) {
-      return $state.transitionTo('matches', {
+      return $state.go('matches', {
         edit: edit
       }, {
-        reload: true,
-        inherit: true,
-        notify: true
+        reload: true
       });
     };
   }
