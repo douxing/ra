@@ -53,6 +53,6 @@ ra.controller 'NavBarController', [
         a: edit
         b: 1
 
-      , 
-        reload: true
+    $scope.viewLast12 =  ->
+      $state.go 'last12'
 ]

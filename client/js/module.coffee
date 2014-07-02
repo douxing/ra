@@ -44,6 +44,15 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
           $rootScope.capsule.edit = $stateParams.edit
         ]
     auth: true
+  .state 'last12',
+    url: '/last12'
+    views:
+      'main':
+        templateUrl: '/tpls/match/last12.html'
+        controller: ['$scope', ($scope) ->
+          $scope
+        ]
+    auth: true
 
 
 

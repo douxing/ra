@@ -73,6 +73,19 @@ ra.config([
         }
       },
       auth: true
+    }).state('last12', {
+      url: '/last12',
+      views: {
+        'main': {
+          templateUrl: '/tpls/match/last12.html',
+          controller: [
+            '$scope', function($scope) {
+              return $scope;
+            }
+          ]
+        }
+      },
+      auth: true
     });
   }
 ]);

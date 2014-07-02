@@ -71,14 +71,15 @@ ra.controller('NavBarController', [
         });
       }, function() {});
     };
-    return $scope.viewMatches = function(edit) {
+    $scope.viewMatches = function(edit) {
       return $state.go('matches', {
         edit: true,
         a: edit,
         b: 1
-      }, {
-        reload: true
       });
+    };
+    return $scope.viewLast12 = function() {
+      return $state.go('last12');
     };
   }
 ]);
