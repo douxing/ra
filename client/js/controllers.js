@@ -39,7 +39,7 @@ ra.controller('NavBarController', [
         });
       }, function() {});
     };
-    return $scope.addMatchday = function() {
+    $scope.addMatchday = function() {
       var modal;
       modal = $modal.open({
         templateUrl: '/tpls/matchday/new.html',
@@ -70,6 +70,11 @@ ra.controller('NavBarController', [
           notify: true
         });
       }, function() {});
+    };
+    return $scope.viewMatches = function(edit) {
+      return $state.go('matches', {
+        edit: edit
+      });
     };
   }
 ]);

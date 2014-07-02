@@ -11,7 +11,7 @@
       <tbody>
         <tr data-ng-repeat="user in capsule.users">
           <td data-ng-bind="user.name"></td>
-          <td data-ng-repeat="matchday in user.matchdays"><span data-ng-bind="matchday[user._id]"></span></td>
+          <td data-ng-repeat="matchday in user.matchdays"><span data-ng-if="matchday[user._id] &amp;&amp; capsule.edit" data-ng-bind="matchday[user._id]"></span><span data-ng-if="matchday[user._id] &amp;&amp; !capsule.edit" data-ng-bind="matchday[user._id]"></span><span data-ng-if="!matchday[user._id] &amp;&amp; capsule.edit">无</span><span data-ng-if="!matchday[user._id] &amp;&amp; !capsule.edit">&hbsp;</span></td>
         </tr>
       </tbody>
     </table>

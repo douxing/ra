@@ -15,7 +15,16 @@ html
         ul.nav.navbar-nav
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown')
-              span 管理
+              span 数据
+              b.caret
+            ul.dropdown-menu
+              li: a(data-ng-click='viewMatches()') 比赛历史
+              li: a(data-ng-click='viewMatches(true)') 比赛历史(管理)
+              li: a(data-ng-click='latest12()') 经典12场
+        ul.nav.navbar-nav
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown')
+              span 操作
               b.caret
             ul.dropdown-menu
               li: a(data-ng-click='addUser()') 新球员

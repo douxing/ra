@@ -33,13 +33,15 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     views:
       'main':
         templateUrl: '/tpls/match/list.html'
-        controller: ['$rootScope', '$state', 'users', 'matchdays', ($rootScope, $state, users, matchdays) ->
+        controller: ['$rootScope', '$state', '$stateParams', 'users', 'matchdays', ($rootScope, $state, $stateParams, users, matchdays) ->
           user.matchdays = matchdays for user in users
 
           $rootScope.capsule.users.splice 0, $rootScope.capsule.users.length
           $rootScope.capsule.users.push user for user in users
           $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
           $rootScope.capsule.matchdays.push matchday for matchday in matchdays
+
+          $rootScope.capsule.edit = $stateParams.edit
         ]
     auth: true
 

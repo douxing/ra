@@ -47,5 +47,7 @@ ra.controller 'NavBarController', [
       , ->
         return
 
-
+    $scope.viewMatches = (edit) ->
+      $state.go 'matches', 
+        edit: edit
 ]
