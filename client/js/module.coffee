@@ -33,15 +33,48 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     views:
       'main':
         templateUrl: '/tpls/match/list.html'
-        controller: ['$rootScope', '$state', '$stateParams', 'users', 'matchdays', ($rootScope, $state, $stateParams, users, matchdays) ->
-          user.matchdays = matchdays for user in users
+        controller: ['$rootScope', '$state', '$stateParams', 'users', 'matchdays', '$scope', '$modal', '$window'
+          ($rootScope, $state, $stateParams, users, matchdays, $scope, $modal, $window) ->
+            user.matchdays = matchdays for user in users
 
-          $rootScope.capsule.users.splice 0, $rootScope.capsule.users.length
-          $rootScope.capsule.users.push user for user in users
-          $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
-          $rootScope.capsule.matchdays.push matchday for matchday in matchdays
+            $rootScope.capsule.users.splice 0, $rootScope.capsule.users.length
+            $rootScope.capsule.users.push user for user in users
+            $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
+            $rootScope.capsule.matchdays.push matchday for matchday in matchdays
 
-          $rootScope.capsule.manage = if $stateParams.manage is 'manage' then true else false
+            $rootScope.capsule.manage = if $stateParams.manage is 'manage' then true else false
+
+            $scope.changeScore = (user, matchday) ->
+              modal = $modal.open
+                templateUrl: '/tpls/matchday/score.html'
+                controller: ['$scope', '$http', ($scope, $http) ->
+                  $scope.user = user
+                  $scope.matchday = matchday
+                  $scope.user_matchday_score = user.matchdays[matchday.id] ? ''
+                  $scope.resetUserMatchdayScore = ->
+                    $scope.user_matchday_score = user.matchdays[matchday.id] ? ''
+
+                  $scope.ok = ->
+                    score = $window.parseInt $scope.user_matchday_score
+                    $http.post "/matchdays/#{matchday._id}/update_score",
+                      player: user._id
+                      score: score
+                    .success (data, status, headers, config) ->
+                      t = [data, status, headers, config]
+                      user.matchdays[matchday.id] = if score then score else null
+                      modal.close 'ok'
+                    .error (data, status, headers, config) ->
+                      t = [data, status, headers, config]
+                      modal.dismiss 'error'
+                  $scope.cancel = ->
+                    modal.dismiss 'cancel'
+                ]
+                backdrop: 'static'
+
+              modal.result.then ->
+                return
+              , ->
+                return
         ]
     auth: true
   .state 'last12',

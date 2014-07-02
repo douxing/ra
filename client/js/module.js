@@ -51,7 +51,7 @@ ra.config([
         'main': {
           templateUrl: '/tpls/match/list.html',
           controller: [
-            '$rootScope', '$state', '$stateParams', 'users', 'matchdays', function($rootScope, $state, $stateParams, users, matchdays) {
+            '$rootScope', '$state', '$stateParams', 'users', 'matchdays', '$scope', '$modal', '$window', function($rootScope, $state, $stateParams, users, matchdays, $scope, $modal, $window) {
               var matchday, user, _i, _j, _k, _len, _len1, _len2;
               for (_i = 0, _len = users.length; _i < _len; _i++) {
                 user = users[_i];
@@ -67,7 +67,47 @@ ra.config([
                 matchday = matchdays[_k];
                 $rootScope.capsule.matchdays.push(matchday);
               }
-              return $rootScope.capsule.manage = $stateParams.manage === 'manage' ? true : false;
+              $rootScope.capsule.manage = $stateParams.manage === 'manage' ? true : false;
+              return $scope.changeScore = function(user, matchday) {
+                var modal;
+                modal = $modal.open({
+                  templateUrl: '/tpls/matchday/score.html',
+                  controller: [
+                    '$scope', '$http', function($scope, $http) {
+                      var _ref;
+                      $scope.user = user;
+                      $scope.matchday = matchday;
+                      $scope.user_matchday_score = (_ref = user.matchdays[matchday.id]) != null ? _ref : '';
+                      $scope.resetUserMatchdayScore = function() {
+                        var _ref1;
+                        return $scope.user_matchday_score = (_ref1 = user.matchdays[matchday.id]) != null ? _ref1 : '';
+                      };
+                      $scope.ok = function() {
+                        var score;
+                        score = $window.parseInt($scope.user_matchday_score);
+                        return $http.post("/matchdays/" + matchday._id + "/update_score", {
+                          player: user._id,
+                          score: score
+                        }).success(function(data, status, headers, config) {
+                          var t;
+                          t = [data, status, headers, config];
+                          user.matchdays[matchday.id] = score ? score : null;
+                          return modal.close('ok');
+                        }).error(function(data, status, headers, config) {
+                          var t;
+                          t = [data, status, headers, config];
+                          return modal.dismiss('error');
+                        });
+                      };
+                      return $scope.cancel = function() {
+                        return modal.dismiss('cancel');
+                      };
+                    }
+                  ],
+                  backdrop: 'static'
+                });
+                return modal.result.then(function() {}, function() {});
+              };
             }
           ]
         }

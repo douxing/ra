@@ -19,13 +19,13 @@ User = require("" + models_path + "/user");
 
 module.exports = function(app, config) {
   console.log('about to add routes for matchdays...');
-  app.use(route.get('/matchdays', function*(req, res) {
+  app.use(route.get('/matchdays', function*() {
     var matchdays;
     console.log("about to route: GET /matchdays");
     matchdays = yield Matchday.find().exec();
     this.body = matchdays;
   }));
-  return app.use(route.post('/matchdays/add', function*(req, res) {
+  app.use(route.post('/matchdays/add', function*() {
     var body, matchday;
     console.log("about to route: POST matchdays/add");
     body = yield parse(this);
@@ -36,5 +36,17 @@ module.exports = function(app, config) {
     yield matchday.save();
     this.status = 201;
     this.body = matchday;
+  }));
+  return app.use(route.post('/matchdays/:id/update_score', function*(matchday_id) {
+    var body, machday;
+    console.log("about to route: POST /matchdays/:id/update_score");
+    machday = yield Matchday.find({
+      _id: matchday_id
+    }).exec();
+    body = yield parse(this);
+    console.log("matchday body: " + (util.inspect(body)));
+    matchday.save = thunkify(matchday.save);
+    yield matchday.save();
+    this.status = 201;
   }));
 };

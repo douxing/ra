@@ -1,4 +1,4 @@
-.container
+.container-fluid
   .row
     table.table
       thead
@@ -12,7 +12,7 @@
         tr(data-ng-repeat='user in capsule.users')
           td(data-ng-bind='user.name')
           td(data-ng-repeat='matchday in user.matchdays')
-            span(data-ng-if='matchday[user._id] && capsule.manage' data-ng-bind='matchday[user._id]') 
+            span(data-ng-if='matchday[user._id] && capsule.manage'): a(data-ng-bind='matchday[user._id]' data-ng-click='changeScore(user, matchday)')
             span(data-ng-if='matchday[user._id] && !capsule.manage' data-ng-bind='matchday[user._id]')
-            span(data-ng-if='!matchday[user._id] && capsule.manage') 无
+            span(data-ng-if='!matchday[user._id] && capsule.manage'): a(data-ng-click='changeScore(user, matchday)') 无
             span(data-ng-if='!matchday[user._id] && !capsule.manage')
