@@ -49,7 +49,10 @@ ra.controller 'NavBarController', [
 
     $scope.viewMatches = (edit) ->
       $state.go 'matches', 
-        edit: edit
+        edit: true
+        a: edit
+        b: 1
+
       , 
         reload: true
 ]

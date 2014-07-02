@@ -73,7 +73,9 @@ ra.controller('NavBarController', [
     };
     return $scope.viewMatches = function(edit) {
       return $state.go('matches', {
-        edit: edit
+        edit: true,
+        a: edit,
+        b: 1
       }, {
         reload: true
       });
