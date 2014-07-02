@@ -72,10 +72,10 @@ ra.controller('NavBarController', [
       }, function() {});
     };
     $scope.viewMatches = function(edit) {
+      var manage;
+      manage = edit ? 'manage' : null;
       return $state.go('matches', {
-        edit: true,
-        a: edit,
-        b: 1
+        manage: manage
       });
     };
     return $scope.viewLast12 = function() {

@@ -23,7 +23,7 @@ ra.config([
         }
       }
     }).state("matches", {
-      url: "/matches",
+      url: "/matches/:manage",
       resolve: {
         users: [
           '$http', function($http) {
@@ -67,7 +67,7 @@ ra.config([
                 matchday = matchdays[_k];
                 $rootScope.capsule.matchdays.push(matchday);
               }
-              return $rootScope.capsule.edit = $stateParams.edit;
+              return $rootScope.capsule.manage = $stateParams.manage === 'manage' ? true : false;
             }
           ]
         }

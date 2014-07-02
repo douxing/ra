@@ -48,10 +48,9 @@ ra.controller 'NavBarController', [
         return
 
     $scope.viewMatches = (edit) ->
+      manage = if edit then 'manage' else null
       $state.go 'matches', 
-        edit: true
-        a: edit
-        b: 1
+        manage: manage
 
     $scope.viewLast12 =  ->
       $state.go 'last12'

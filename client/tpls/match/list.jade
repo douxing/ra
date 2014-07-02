@@ -12,7 +12,7 @@
         tr(data-ng-repeat='user in capsule.users')
           td(data-ng-bind='user.name')
           td(data-ng-repeat='matchday in user.matchdays')
-            span(data-ng-if='matchday[user._id] && capsule.edit' data-ng-bind='matchday[user._id]') 
-            span(data-ng-if='matchday[user._id] && !capsule.edit' data-ng-bind='matchday[user._id]')
-            span(data-ng-if='!matchday[user._id] && capsule.edit') 无
-            span(data-ng-if='!matchday[user._id] && !capsule.edit')
+            span(data-ng-if='matchday[user._id] && capsule.manage' data-ng-bind='matchday[user._id]') 
+            span(data-ng-if='matchday[user._id] && !capsule.manage' data-ng-bind='matchday[user._id]')
+            span(data-ng-if='!matchday[user._id] && capsule.manage') 无
+            span(data-ng-if='!matchday[user._id] && !capsule.manage')

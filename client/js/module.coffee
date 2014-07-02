@@ -15,7 +15,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
           , 0
         ]
   .state "matches", 
-    url: "/matches"
+    url: "/matches/:manage"
     resolve:
       users: ['$http', ($http) ->
         $http.get '/users'
@@ -41,7 +41,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
           $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
           $rootScope.capsule.matchdays.push matchday for matchday in matchdays
 
-          $rootScope.capsule.edit = $stateParams.edit
+          $rootScope.capsule.manage = if $stateParams.manage is 'manage' then true else false
         ]
     auth: true
   .state 'last12',
