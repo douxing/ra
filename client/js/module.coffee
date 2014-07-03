@@ -25,8 +25,10 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
       matchdays: ['$http', ($http) ->
         $http.get '/matchdays'
         .then (data) ->
-          days = []
           for matchday in data.data
+            scoreDict = {}
+            scoreDict[obj.player] = obj for obj in matchday.scores
+            matchday.scores = scoreDict
             days[matchday.id] = matchday
           days
       ]
@@ -50,9 +52,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                 controller: ['$scope', '$http', ($scope, $http) ->
                   $scope.user = user
                   $scope.matchday = matchday
-                  $scope.user_matchday_score = user.matchdays[matchday.id] ? ''
-                  $scope.resetUserMatchdayScore = ->
-                    $scope.user_matchday_score = user.matchdays[matchday.id] ? ''
+                  $scope.user_matchday_score_origin = $scope.user_matchday_score = matchday.scores[user._id].score ? ''
 
                   $scope.ok = ->
                     score = $window.parseInt $scope.user_matchday_score

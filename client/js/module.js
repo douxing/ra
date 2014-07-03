@@ -35,11 +35,17 @@ ra.config([
         matchdays: [
           '$http', function($http) {
             return $http.get('/matchdays').then(function(data) {
-              var days, matchday, _i, _len, _ref;
-              days = [];
+              var matchday, obj, scoreDict, _i, _j, _len, _len1, _ref, _ref1;
               _ref = data.data;
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 matchday = _ref[_i];
+                scoreDict = {};
+                _ref1 = matchday.scores;
+                for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                  obj = _ref1[_j];
+                  scoreDict[obj.player] = obj;
+                }
+                matchday.scores = scoreDict;
                 days[matchday.id] = matchday;
               }
               return days;
@@ -77,11 +83,7 @@ ra.config([
                       var _ref;
                       $scope.user = user;
                       $scope.matchday = matchday;
-                      $scope.user_matchday_score = (_ref = user.matchdays[matchday.id]) != null ? _ref : '';
-                      $scope.resetUserMatchdayScore = function() {
-                        var _ref1;
-                        return $scope.user_matchday_score = (_ref1 = user.matchdays[matchday.id]) != null ? _ref1 : '';
-                      };
+                      $scope.user_matchday_score_origin = $scope.user_matchday_score = (_ref = matchday.scores[user._id].score) != null ? _ref : '';
                       $scope.ok = function() {
                         var score;
                         score = $window.parseInt($scope.user_matchday_score);
