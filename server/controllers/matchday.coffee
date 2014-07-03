@@ -34,7 +34,7 @@ module.exports = (app, config) ->
 
   app.use route.post '/matchdays/:id/update_score', (matchday_id) -->
     console.log "about to route: POST /matchdays/#{matchday_id}/update_score"
-    machday = yield Matchday.findOne({_id: ObjectId(matchday_id)}).exec()
+    matchday = yield Matchday.findOne({_id: ObjectId(matchday_id)}).exec()
     body = yield parse @
     body.score = parseFloat body.score.trim() if body.score
     console.log "matchday body: #{util.inspect body} \nmatchday: #{util.inspect matchday}"

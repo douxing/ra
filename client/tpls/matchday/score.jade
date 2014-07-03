@@ -10,10 +10,10 @@
 
   .input-group
     span.input-group-btn
-      button.btn.btn-default(type='button' data-ng-click='user_matchday_score=""') 空值
-    input.form-control(type='text' data-ng-model='user_matchday_score')
+      button.btn.btn-default(type='button' data-ng-click='$parent.user_matchday_score=""') 空值
+    input.form-control(type='text' data-ng-model='$parent.user_matchday_score')
     span.input-group-btn
-      button.btn.btn-default(type='button' data-ng-click='user_matchday_score=user_matchday_score_origin') 重置
+      button.btn.btn-default(type='button' data-ng-click='$parent.user_matchday_score=$parent.user_matchday_score_origin') 重置
 
 .modal-footer
   button.btn.btn-primary(data-ng-click='ok()') 确定

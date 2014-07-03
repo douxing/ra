@@ -5,9 +5,9 @@
 <div class="modal-body">
   <h3><span data-ng-bind="user.name"></span>于第<span data-ng-bind="matchday.id"></span>比赛日的成绩</h3>
   <div class="input-group"><span class="input-group-btn">
-      <button type="button" data-ng-click="user_matchday_score=&quot;&quot;" class="btn btn-default">空值</button></span>
-    <input type="text" data-ng-model="user_matchday_score" class="form-control"/><span class="input-group-btn">
-      <button type="button" data-ng-click="user_matchday_score=user_matchday_score_origin" class="btn btn-default">重置</button></span>
+      <button type="button" data-ng-click="$parent.user_matchday_score=&quot;&quot;" class="btn btn-default">空值</button></span>
+    <input type="text" data-ng-model="$parent.user_matchday_score" class="form-control"/><span class="input-group-btn">
+      <button type="button" data-ng-click="$parent.user_matchday_score=$parent.user_matchday_score_origin" class="btn btn-default">重置</button></span>
   </div>
 </div>
 <div class="modal-footer">

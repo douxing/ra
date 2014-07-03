@@ -40,9 +40,9 @@ module.exports = function(app, config) {
     this.body = matchday;
   }));
   return app.use(route.post('/matchdays/:id/update_score', function*(matchday_id) {
-    var body, i, index, machday, obj, _i, _len, _ref;
+    var body, i, index, matchday, obj, _i, _len, _ref;
     console.log("about to route: POST /matchdays/" + matchday_id + "/update_score");
-    machday = yield Matchday.findOne({
+    matchday = yield Matchday.findOne({
       _id: ObjectId(matchday_id)
     }).exec();
     body = yield parse(this);
