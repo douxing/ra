@@ -56,13 +56,12 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                   $scope.user_matchday_score_origin = $scope.user_matchday_score = matchday.scores[user._id]?.score ? ''
 
                   $scope.ok = ->
-                    score = $window.parseInt $scope.user_matchday_score
                     $http.post "/matchdays/#{matchday._id}/update_score",
                       player: user._id
-                      score: score
+                      score: $scope.user_matchday_score
                     .success (data, status, headers, config) ->
                       t = [data, status, headers, config]
-                      user.matchdays[matchday.id] = if score then score else null
+                      matchday.scores[user._id].score = if $scope.user_matchday_score then $scope.user_matchday_score else null
                       modal.close 'ok'
                     .error (data, status, headers, config) ->
                       t = [data, status, headers, config]

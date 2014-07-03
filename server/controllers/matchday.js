@@ -38,13 +38,39 @@ module.exports = function(app, config) {
     this.body = matchday;
   }));
   return app.use(route.post('/matchdays/:id/update_score', function*(matchday_id) {
-    var body, machday;
-    console.log("about to route: POST /matchdays/:id/update_score");
+    var body, i, index, machday, obj, _i, _len, _ref;
+    console.log("about to route: POST /matchdays/" + matchday_id + "/update_score");
     machday = yield Matchday.find({
-      _id: matchday_id
+      _id: mongoose.Schema.Types.ObjectId(matchday_id)
     }).exec();
     body = yield parse(this);
+    if (body.score) {
+      body.score = parseFloat(body.score.trim());
+    }
     console.log("matchday body: " + (util.inspect(body)));
+    index = void 0;
+    _ref = matchday.scores;
+    for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+      obj = _ref[i];
+      if (obj.player.toString() === body.player) {
+        index = i;
+        break;
+      }
+    }
+    if (index) {
+      if (body.score) {
+        matchday.scores.push({
+          player: mongoose.Schema.Types.ObjectId(body.player),
+          score: body.score
+        });
+      } else {
+        matchday.splice(index, 1);
+      }
+    } else {
+      if (body.score) {
+        matchday[index].score = body.score;
+      }
+    }
     matchday.save = thunkify(matchday.save);
     yield matchday.save();
     this.status = 201;

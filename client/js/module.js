@@ -86,15 +86,13 @@ ra.config([
                       $scope.matchday = matchday;
                       $scope.user_matchday_score_origin = $scope.user_matchday_score = (_ref = (_ref1 = matchday.scores[user._id]) != null ? _ref1.score : void 0) != null ? _ref : '';
                       $scope.ok = function() {
-                        var score;
-                        score = $window.parseInt($scope.user_matchday_score);
                         return $http.post("/matchdays/" + matchday._id + "/update_score", {
                           player: user._id,
-                          score: score
+                          score: $scope.user_matchday_score
                         }).success(function(data, status, headers, config) {
                           var t;
                           t = [data, status, headers, config];
-                          user.matchdays[matchday.id] = score ? score : null;
+                          matchday.scores[user._id].score = $scope.user_matchday_score ? $scope.user_matchday_score : null;
                           return modal.close('ok');
                         }).error(function(data, status, headers, config) {
                           var t;

@@ -32,27 +32,27 @@ module.exports = (app, config) ->
     @body = matchday
 
   app.use route.post '/matchdays/:id/update_score', (matchday_id) -->
-    console.log "about to route: POST /matchdays/:id/update_score"
-    machday = yield Matchday.find({_id: matchday_id}).exec()
+    console.log "about to route: POST /matchdays/#{matchday_id}/update_score"
+    machday = yield Matchday.find({_id: mongoose.Schema.Types.ObjectId(matchday_id)}).exec()
     body = yield parse @
+    body.score = parseFloat body.score.trim() if body.score
     console.log "matchday body: #{util.inspect body}"
-    index = -1
+    index = undefined
     for obj, i in matchday.scores
       if obj.player.toString() is body.player
         index = i
         break
-    if index == -1
+    if index # found
       if body.score
         matchday.scores.push
-          player: body.player
+          player: mongoose.Schema.Types.ObjectId(body.player)
           score: body.score
-    else
-      if body.score
-        matchday[index].player = body.player
-        matchday[index].score = body.score
       else
         matchday.splice index, 1
-
+    else # not found
+      if body.score
+        matchday[index].score = body.score
+      
     matchday.save = thunkify(matchday.save)
     yield matchday.save()
     @status = 201
