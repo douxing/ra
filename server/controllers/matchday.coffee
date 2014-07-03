@@ -57,5 +57,5 @@ module.exports = (app, config) ->
     matchday.save = thunkify(matchday.save)
     yield matchday.save()
     @status = 201
-
+    @body = body
 

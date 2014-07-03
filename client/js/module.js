@@ -92,7 +92,7 @@ ra.config([
                         }).success(function(data, status, headers, config) {
                           var t;
                           t = [data, status, headers, config];
-                          matchday.scores[user._id].score = $scope.user_matchday_score ? $scope.user_matchday_score : null;
+                          matchday.scores[user._id] = data;
                           return modal.close('ok');
                         }).error(function(data, status, headers, config) {
                           var t;

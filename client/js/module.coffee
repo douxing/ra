@@ -61,7 +61,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                       score: $scope.user_matchday_score
                     .success (data, status, headers, config) ->
                       t = [data, status, headers, config]
-                      matchday.scores[user._id].score = if $scope.user_matchday_score then $scope.user_matchday_score else null
+                      matchday.scores[user._id] = data
                       modal.close 'ok'
                     .error (data, status, headers, config) ->
                       t = [data, status, headers, config]

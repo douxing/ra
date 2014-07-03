@@ -76,5 +76,6 @@ module.exports = function(app, config) {
     matchday.save = thunkify(matchday.save);
     yield matchday.save();
     this.status = 201;
+    this.body = body;
   }));
 };
