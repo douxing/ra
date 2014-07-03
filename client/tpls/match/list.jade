@@ -12,7 +12,11 @@
         tr(data-ng-repeat='user in capsule.users')
           td(data-ng-bind='user.name')
           td(data-ng-repeat='matchday in user.matchdays')
-            span(data-ng-if='matchday.scores[user._id] && capsule.manage'): a(data-ng-bind='matchday.scores[user._id]' data-ng-click='changeScore(user, matchday)')
-            span(data-ng-if='matchday.scores[user._id] && !capsule.manage' data-ng-bind='matchday.scores[user._id]')
-            span(data-ng-if='!matchday.scores[user._id] && capsule.manage'): a(data-ng-click='changeScore(user, matchday)') 无
-            span(data-ng-if='!matchday.scores[user._id] && !capsule.manage')
+            span(data-ng-if='capsule.manage')
+              span(data-ng-if='matchday.scores[user._id] && matchday.scores[user._id].score')
+                a(data-ng-click='changeScore(user, matchday)' data-ng-bind='matchday.scores[user._id].score')
+              span(data-ng-if='!matchday.scores[user._id] || !matchday.scores[user._id].score')
+                a(data-ng-click='changeScore(user, matchday)') 无
+            span(data-ng-if='!capsule.manage')
+              span(data-ng-if='matchday.scores[user._id] && matchday.scores[user._id].score' data-ng-bind='matchday.scores[user._id].score')
+              span(data-ng-if='!matchday.scores[user._id] || !matchday.scores[user._id].score')
