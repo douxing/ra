@@ -7,6 +7,7 @@ util = require 'util'
 
 models_path = "#{__dirname}/../models"
 
+ObjectId = mongoose.Types.ObjectId
 Matchday = require "#{models_path}/matchday"
 User     = require "#{models_path}/user"
 
@@ -33,10 +34,10 @@ module.exports = (app, config) ->
 
   app.use route.post '/matchdays/:id/update_score', (matchday_id) -->
     console.log "about to route: POST /matchdays/#{matchday_id}/update_score"
-    machday = yield Matchday.find({_id: mongoose.Schema.Types.ObjectId(matchday_id)}).exec()
+    machday = yield Matchday.findOne({_id: ObjectId(matchday_id)}).exec()
     body = yield parse @
     body.score = parseFloat body.score.trim() if body.score
-    console.log "matchday body: #{util.inspect body}"
+    console.log "matchday body: #{util.inspect body} \nmatchday: #{util.inspect matchday}"
     index = undefined
     for obj, i in matchday.scores
       if obj.player.toString() is body.player
@@ -45,7 +46,7 @@ module.exports = (app, config) ->
     if index # found
       if body.score
         matchday.scores.push
-          player: mongoose.Schema.Types.ObjectId(body.player)
+          player: ObjectId(body.player)
           score: body.score
       else
         matchday.splice index, 1
