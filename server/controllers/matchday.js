@@ -61,16 +61,16 @@ module.exports = function(app, config) {
     }
     if (index) {
       if (body.score) {
+        matchday.scores[index].score = body.score;
+      } else {
+        matchday.scores.splice(index, 1);
+      }
+    } else {
+      if (body.score) {
         matchday.scores.push({
           player: ObjectId(body.player),
           score: body.score
         });
-      } else {
-        matchday.splice(index, 1);
-      }
-    } else {
-      if (body.score) {
-        matchday[index].score = body.score;
       }
     }
     matchday.save = thunkify(matchday.save);

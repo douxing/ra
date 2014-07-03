@@ -45,14 +45,14 @@ module.exports = (app, config) ->
         break
     if index # found
       if body.score
+        matchday.scores[index].score = body.score
+      else
+        matchday.scores.splice index, 1
+    else # not found
+      if body.score
         matchday.scores.push
           player: ObjectId(body.player)
           score: body.score
-      else
-        matchday.splice index, 1
-    else # not found
-      if body.score
-        matchday[index].score = body.score
       
     matchday.save = thunkify(matchday.save)
     yield matchday.save()
