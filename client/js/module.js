@@ -81,10 +81,10 @@ ra.config([
                   templateUrl: '/tpls/matchday/score.html',
                   controller: [
                     '$scope', '$http', function($scope, $http) {
-                      var _ref;
+                      var _ref, _ref1;
                       $scope.user = user;
                       $scope.matchday = matchday;
-                      $scope.user_matchday_score_origin = $scope.user_matchday_score = (_ref = matchday.scores[user._id].score) != null ? _ref : '';
+                      $scope.user_matchday_score_origin = $scope.user_matchday_score = (_ref = (_ref1 = matchday.scores[user._id]) != null ? _ref1.score : void 0) != null ? _ref : '';
                       $scope.ok = function() {
                         var score;
                         score = $window.parseInt($scope.user_matchday_score);

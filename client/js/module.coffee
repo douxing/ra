@@ -53,7 +53,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                 controller: ['$scope', '$http', ($scope, $http) ->
                   $scope.user = user
                   $scope.matchday = matchday
-                  $scope.user_matchday_score_origin = $scope.user_matchday_score = matchday.scores[user._id].score ? ''
+                  $scope.user_matchday_score_origin = $scope.user_matchday_score = matchday.scores[user._id]?.score ? ''
 
                   $scope.ok = ->
                     score = $window.parseInt $scope.user_matchday_score
