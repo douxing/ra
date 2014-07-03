@@ -25,6 +25,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
       matchdays: ['$http', ($http) ->
         $http.get '/matchdays'
         .then (data) ->
+          days = []
           for matchday in data.data
             scoreDict = {}
             scoreDict[obj.player] = obj for obj in matchday.scores
@@ -104,7 +105,7 @@ ra.run ['$rootScope', '$location', ($rootScope, $location) ->
     $rootScope.state_changing = true
 
   $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams) ->
-    t = [event, toState, toParams, fromState, fromParams].
+    t = [event, toState, toParams, fromState, fromParams]
     $rootScope.state_changing = false
 
   $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->

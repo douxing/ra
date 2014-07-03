@@ -35,7 +35,8 @@ ra.config([
         matchdays: [
           '$http', function($http) {
             return $http.get('/matchdays').then(function(data) {
-              var matchday, obj, scoreDict, _i, _j, _len, _len1, _ref, _ref1;
+              var days, matchday, obj, scoreDict, _i, _j, _len, _len1, _ref, _ref1;
+              days = [];
               _ref = data.data;
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 matchday = _ref[_i];
@@ -147,7 +148,8 @@ ra.run([
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
       var t;
-      return t = [event, toState, toParams, fromState, fromParams].$rootScope.state_changing = false;
+      t = [event, toState, toParams, fromState, fromParams];
+      return $rootScope.state_changing = false;
     });
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       var t;
