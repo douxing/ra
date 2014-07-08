@@ -1,16 +1,15 @@
 .container-fluid
   .row
-    table.table
+    table.table.table-striped.table-hover.table-condensed
       thead
         tr
-          th 球员 / 比赛日
-          th(data-ng-repeat='matchday in capsule.matchdays')
-            | 第
+          th.first 球员 / 比赛日
+          th(data-ng-repeat='matchday in capsule.matchdays') 
+            | No.
             span(data-ng-bind='matchday.id')
-            | 比赛日
       tbody
         tr(data-ng-repeat='user in capsule.users')
-          td(data-ng-bind='user.name')
+          td.first(data-ng-bind='user.name')
           td(data-ng-repeat='matchday in user.matchdays')
             span(data-ng-if='capsule.manage')
               span(data-ng-if='matchday.scores[user._id] && matchday.scores[user._id].score')

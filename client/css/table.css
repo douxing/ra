@@ -1,0 +1,25 @@
+table.table {
+  border-collapse: collapse;
+  margin-bottom: 3em;
+  width: 100%;
+  background: #fff;
+}
+table.table thead tr th {
+  height: 28px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #31bc86;
+  color: #fff;
+  white-space: nowrap;
+}
+table.table thead tr th.first {
+  background-color: #666;
+}
+table.table tbody tr td {
+  text-align: center;
+  white-space: nowrap;
+}
+table.table tbody tr td.first {
+  background-color: #2ea879;
+}
+/* For appearance */

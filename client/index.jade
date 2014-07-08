@@ -8,6 +8,7 @@ html
     script(src="//cdn.bootcss.com/angular.js/1.2.16/angular.js")
   body(data-ng-app="ra")
     link(rel='stylesheet' href='/css/default.css')
+    link(rel='stylesheet' href='/css/table.css')
     nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
       .container(data-ng-controller="NavBarController")
         .navbar-header
@@ -20,7 +21,7 @@ html
             ul.dropdown-menu
               li: a(data-ng-click='viewMatches()') 比赛历史
               li: a(data-ng-click='viewMatches(true)') 比赛历史(管理)
-              li: a(data-ng-click='viewLast12()') 最近12场-经典算法
+              li: a(data-ng-click='viewLast12()') 最近12场-古典算法
         ul.nav.navbar-nav
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown')

@@ -1,9 +1,13 @@
 .nav a,
 .pagination a,
 .carousel a,
-.panel-title a {
+.panel-title a,
+.table a {
   cursor: pointer;
 }
 body {
   padding-top: 50px;
+}
+* {
+  box-sizing: border-box;
 }
