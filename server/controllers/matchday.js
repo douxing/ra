@@ -47,14 +47,14 @@ module.exports = function(app, config) {
     }).exec();
     body = yield parse(this);
     if (body.score) {
-      body.score = parseFloat(body.score.trim());
+      body.score = parseFloat(body.score);
     }
     console.log("matchday body: " + (util.inspect(body)) + " \nmatchday: " + (util.inspect(matchday)));
     index = void 0;
     _ref = matchday.scores;
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       obj = _ref[i];
-      if (obj.player.toString() === body.player) {
+      if (obj.player.str === body.player) {
         index = i;
         break;
       }

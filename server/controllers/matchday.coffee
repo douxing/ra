@@ -36,11 +36,11 @@ module.exports = (app, config) ->
     console.log "about to route: POST /matchdays/#{matchday_id}/update_score"
     matchday = yield Matchday.findOne({_id: ObjectId(matchday_id)}).exec()
     body = yield parse @
-    body.score = parseFloat body.score.trim() if body.score
+    body.score = parseFloat body.score if body.score
     console.log "matchday body: #{util.inspect body} \nmatchday: #{util.inspect matchday}"
     index = undefined
     for obj, i in matchday.scores
-      if obj.player.toString() is body.player
+      if obj.player.str is body.player
         index = i
         break
     if index # found
