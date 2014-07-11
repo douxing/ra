@@ -3,12 +3,9 @@ html
   head
     title= title
     meta(charset="utf-8")
-    link(rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.1.1/css/bootstrap.css")
     script(src="//cdn.bootcss.com/jquery/2.1.1/jquery.js")
     script(src="//cdn.bootcss.com/angular.js/1.2.16/angular.js")
   body(data-ng-app="ra")
-    link(rel='stylesheet' href='/css/default.css')
-    link(rel='stylesheet' href='/css/table.css')
     nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
       .container(data-ng-controller="NavBarController")
         .navbar-header
@@ -32,9 +29,15 @@ html
               li: a(data-ng-click='addMatchday()') 新比赛日
 
     .main-ui-view(data-ui-view="main")
+    link(rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.1.1/css/bootstrap.css")
+    link(rel='stylesheet' href='//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.css')
+
+    link(rel='stylesheet' href='/css/default.css')
 
     script(src="//cdn.bootcss.com/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js")
     script(src="//cdn.bootcss.com/angular-ui-router/0.2.10/angular-ui-router.js")
+    script(src="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.min.js")
+
     script(src="/js/module.js")
     script(src="/js/filters.js")
     script(src="/js/services.js")

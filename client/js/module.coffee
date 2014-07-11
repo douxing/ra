@@ -1,4 +1,4 @@
-ra = angular.module 'ra', ['ui.bootstrap', 'ui.router']
+ra = angular.module 'ra', ['ui.bootstrap', 'ui.router', 'ngGrid']
 
 ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterProvider) ->
   shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>";
@@ -40,12 +40,43 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
           ($rootScope, $state, $stateParams, users, matchdays, $scope, $modal, $window) ->
             user.matchdays = matchdays for user in users
 
-            $rootScope.capsule.users.splice 0, $rootScope.capsule.users.length
-            $rootScope.capsule.users.push user for user in users
-            $rootScope.capsule.matchdays.splice 0, $rootScope.capsule.matchdays.length
-            $rootScope.capsule.matchdays.push matchday for matchday in matchdays
+            $rootScope.rootCapsule.users.splice 0, $rootScope.rootCapsule.users.length
+            $rootScope.rootCapsule.users.push user for user in users
+            $rootScope.rootCapsule.matchdays.splice 0, $rootScope.rootCapsule.matchdays.length
+            $rootScope.rootCapsule.matchdays.push matchday for matchday in matchdays
 
-            $rootScope.capsule.manage = if $stateParams.manage is 'manage' then true else false
+            $rootScope.rootCapsule.manage = if $stateParams.manage is 'manage' then true else false
+
+            headerCellTemplate = '''
+<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{'cursor': col.cursor}" ng-class="{ 'ngSorted': !noSortVisible }"><div ng-click="col.sort($event)" ng-class="'colt' + col.index" class="ngHeaderText">{{col.displayName}}</div><div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div><div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div><div class="ngSortPriority">{{col.sortPriority}}</div><div ng-class="{ ngPinnedIcon: col.pinned, ngUnPinnedIcon: !col.pinned }" ng-click="togglePin(col)" ng-show="false"></div></div><div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>
+            '''
+
+            $scope.capsule = 
+              myData: [
+                { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
+                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
+                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "50,000" },
+                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "40,000" },
+                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
+                    { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
+                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
+                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
+                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
+                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
+                    { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
+                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
+                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
+                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
+                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" }
+              ]
+              gridOptions:
+                enablePinning: true
+                columnDefs: [{ field: "name", width: 120, pinned: true, headerCellTemplate: headerCellTemplate },
+                    { field: "age", width: 120 },
+                    { field: "birthday1", width: 120 },
+                    { field: "salary", width: 120 }
+                  ]
+                data: 'capsule.myData'
 
             $scope.changeScore = (user, matchday) ->
               modal = $modal.open
@@ -93,7 +124,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 ]
 
 ra.run ['$rootScope', '$location', ($rootScope, $location) ->
-  $rootScope.capsule =
+  $rootScope.rootCapsule =
     state_changing: false
     edit: false
     users: []

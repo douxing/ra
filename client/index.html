@@ -3,13 +3,10 @@
   <head>
     <title></title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.1.1/css/bootstrap.css">
     <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.js"></script>
     <script src="//cdn.bootcss.com/angular.js/1.2.16/angular.js"></script>
   </head>
   <body data-ng-app="ra">
-    <link rel="stylesheet" href="/css/default.css">
-    <link rel="stylesheet" href="/css/table.css">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
       <div data-ng-controller="NavBarController" class="container">
         <div class="navbar-header"><a ui-sref="main" class="navbar-brand">无名</a></div>
@@ -33,8 +30,12 @@
       </div>
     </nav>
     <div data-ui-view="main" class="main-ui-view"></div>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.css">
+    <link rel="stylesheet" href="/css/default.css">
     <script src="//cdn.bootcss.com/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+    <script src="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.min.js"></script>
     <script src="/js/module.js"></script>
     <script src="/js/filters.js"></script>
     <script src="/js/services.js"></script>
