@@ -26,16 +26,15 @@ module.exports = function(app, config) {
     this.body = users;
   }));
   return app.use(route.post('/users/add', function*() {
-    var body, user;
+    var body, save_result, user;
     console.log("about to route: POST /users/add");
+    debugger;
     body = yield parse(this);
     console.log("user body: " + (util.inspect(body)));
     user = new User(body);
-    if (!user.name) {
-      user.name = 'noname';
-    }
     user.save = thunkify(user.save);
-    yield user.save();
+    save_result = yield user.save();
+    console.log("save_result: " + (util.inspect(save_result)));
     this.status = 201;
     this.body = user;
   }));

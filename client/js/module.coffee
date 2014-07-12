@@ -36,76 +36,73 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
     views:
       'main':
         templateUrl: '/tpls/match/list.html'
-        controller: ['$rootScope', '$state', '$stateParams', 'users', 'matchdays', '$scope', '$modal', '$window'
-          ($rootScope, $state, $stateParams, users, matchdays, $scope, $modal, $window) ->
-            user.matchdays = matchdays for user in users
-
-            $rootScope.rootCapsule.users.splice 0, $rootScope.rootCapsule.users.length
-            $rootScope.rootCapsule.users.push user for user in users
-            $rootScope.rootCapsule.matchdays.splice 0, $rootScope.rootCapsule.matchdays.length
-            $rootScope.rootCapsule.matchdays.push matchday for matchday in matchdays
-
-            $rootScope.rootCapsule.manage = if $stateParams.manage is 'manage' then true else false
-
-            headerCellTemplate = '''
+        controller: ['$rootScope', '$state', '$stateParams', 'users', 'matchdays', '$scope', '$http', '$window'
+          ($rootScope, $state, $stateParams, users, matchdays, $scope, $http, $window) ->
+            headerCellTemplate = """
 <div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{'cursor': col.cursor}" ng-class="{ 'ngSorted': !noSortVisible }"><div ng-click="col.sort($event)" ng-class="'colt' + col.index" class="ngHeaderText">{{col.displayName}}</div><div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div><div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div><div class="ngSortPriority">{{col.sortPriority}}</div><div ng-class="{ ngPinnedIcon: col.pinned, ngUnPinnedIcon: !col.pinned }" ng-click="togglePin(col)" ng-show="false"></div></div><div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>
-            '''
-
-            $scope.capsule = 
-              myData: [
-                { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "50,000" },
-                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "40,000" },
-                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
-                    { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
-                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
-                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
-                    { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                    { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                    { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
-                    { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
-                    { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" }
-              ]
+"""
+            $scope.matchListCapsule =
               gridOptions:
+                data: 'matchListCapsule.gridData'
                 enablePinning: true
-                columnDefs: [{ field: "name", width: 120, pinned: true, headerCellTemplate: headerCellTemplate },
-                    { field: "age", width: 120 },
-                    { field: "birthday1", width: 120 },
-                    { field: "salary", width: 120 }
-                  ]
-                data: 'capsule.myData'
-
-            $scope.changeScore = (user, matchday) ->
-              modal = $modal.open
-                templateUrl: '/tpls/matchday/score.html'
-                controller: ['$scope', '$http', ($scope, $http) ->
-                  $scope.user = user
-                  $scope.matchday = matchday
-                  $scope.user_matchday_score_origin = $scope.user_matchday_score = matchday.scores[user._id]?.score ? ''
-
-                  $scope.ok = ->
-                    $http.post "/matchdays/#{matchday._id}/update_score",
-                      player: user._id
-                      score: $scope.user_matchday_score
-                    .success (data, status, headers, config) ->
-                      t = [data, status, headers, config]
-                      matchday.scores[user._id] = data
-                      modal.close 'ok'
-                    .error (data, status, headers, config) ->
-                      t = [data, status, headers, config]
-                      modal.dismiss 'error'
-                  $scope.cancel = ->
-                    modal.dismiss 'cancel'
+                enableCellSelection: $stateParams.manage is 'manage'
+                enableRowSelection: false
+                enableCellEdit: $stateParams.manage is 'manage'
+                columnDefs: [
+                  { 
+                    field: 'player'
+                    width: 110
+                    sortable: false
+                    pinned: true
+                    enableCellEdit: false
+                    displayName: '球员/比赛日'
+                  }
                 ]
-                backdrop: 'static'
+              gridData: []
 
-              modal.result.then ->
-                return
-              , ->
-                return
+            for matchday in matchdays
+              $scope.matchListCapsule.gridOptions.columnDefs.push
+                field: "#{matchday.id}"
+                displayName: "No.#{matchday.id + 1}"
+                width: 80
+                sortable: false
+                headerCellTemplate: headerCellTemplate
+
+            for user in users
+              user.matchday = 
+                player: user.name
+              for matchday in matchdays
+                user.matchday[matchday.id] = ''
+                if matchday.scores[user._id] and matchday.scores[user._id].score
+                  user.matchday[matchday.id] = matchday.scores[user._id].score
+                else
+                  user.matchday[matchday.id].score = ''
+                
+              $scope.matchListCapsule.gridData.push user.matchday
+
+            originalScore = null
+            $scope.$on 'ngGridEventStartCellEdit', (event, args...) ->
+              console.log "EndCellEdit: #{event}, #{args}"
+              originalScore = $scope.matchListCapsule.gridData[event.targetScope.row.rowIndex][event.targetScope.col.field]
+
+            $scope.$on 'ngGridEventEndCellEdit', (event, args...) ->
+              console.log "EndCellEdit: #{event}, #{args}"
+              score = $scope.matchListCapsule.gridData[event.targetScope.row.rowIndex][event.targetScope.col.field]
+              matchday = matchdays[event.targetScope.col.field]
+              user = users[event.targetScope.row.rowIndex]
+              $http.post "/matchdays/#{matchday._id}/update_score",
+                player: user._id
+                score: score
+              .success (data, status, headers, config) ->
+                t = [data, status, headers, config]
+                data.score = '' unless data.score
+                matchday.scores[user._id] = data
+                $scope.matchListCapsule.gridData[event.targetScope.row.rowIndex][event.targetScope.col.field] = "#{data.score}"
+              .error (data, status, headers, config) ->
+                t = [data, status, headers, config]
+                $scope.matchListCapsule.gridData[event.targetScope.row.rowIndex][event.targetScope.col.field] = originalScore
+                        
+
         ]
     auth: true
   .state 'last12',
@@ -127,22 +124,22 @@ ra.run ['$rootScope', '$location', ($rootScope, $location) ->
   $rootScope.rootCapsule =
     state_changing: false
     edit: false
-    users: []
-    matchdays: []
+    # users: []
+    # matchdays: []
 
   $rootScope.$on '$stateChangeStart', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]
-    $rootScope.state_changing = true
+    $rootScope.rootCapsule.state_changing = true
 
   $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]
-    $rootScope.state_changing = false
+    $rootScope.rootCapsule.state_changing = false
 
   $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]
-    $rootScope.state_changing = false
+    $rootScope.rootCapsule.state_changing = false
 
   $rootScope.$on '$stateNotFound', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]
-    $rootScope.state_changing = false
+    $rootScope.rootCapsule.state_changing = false
 ]

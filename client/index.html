@@ -27,12 +27,21 @@
             </ul>
           </li>
         </ul>
+        <ul data-ng-hide="stateChanging" class="nav navbar-nav navbar-right">
+          <li data-ng-hide="userService.id" data-ui-sref-active="active"><a data-ui-sref="signin">登录</a></li>
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><span>登录<b class="caret"></b></span></a>
+            <ul class="dropdown-menu">
+              <li><a data-ng-click="confirmSignout()">注销</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </nav>
     <div data-ui-view="main" class="main-ui-view"></div>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.1.1/css/bootstrap.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.min.css">
     <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/table.css">
     <script src="//cdn.bootcss.com/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-router/0.2.10/angular-ui-router.js"></script>
     <script src="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.min.js"></script>

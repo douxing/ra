@@ -47,7 +47,7 @@ module.exports = function(app, config) {
     }).exec();
     body = yield parse(this);
     if (body.score) {
-      body.score = parseFloat(body.score.trim());
+      body.score = parseFloat(body.score);
     }
     console.log("matchday body: " + (util.inspect(body)) + " \nmatchday: " + (util.inspect(matchday)));
     index = void 0;
@@ -59,7 +59,9 @@ module.exports = function(app, config) {
         break;
       }
     }
-    if (index) {
+    console.log("index = " + index);
+    debugger;
+    if (index != null) {
       if (body.score) {
         matchday.scores[index].score = body.score;
       } else {
@@ -73,6 +75,7 @@ module.exports = function(app, config) {
         });
       }
     }
+    console.log("after matchday body: " + (util.inspect(body)) + " \nmatchday: " + (util.inspect(matchday)));
     matchday.save = thunkify(matchday.save);
     yield matchday.save();
     this.status = 201;

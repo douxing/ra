@@ -2,8 +2,22 @@
   h3.modal-title 创建用户
 
 .modal-body
-  | &nbsp;
+  form(role='form' name='userCreation')
+    .form-group
+      label(for='user-email') 邮箱：
+        span.formerror(ng-show="userCreation.userEmail.$error.required") 待填
+        span.formerror(ng-show="userCreation.userEmail.$error.email") 格式错误
+      input.form-control(type='email' id='user-email' name='userEmail' placeholder='输入邮箱' data-ng-model='user.auth.email' required)
+
+    .form-group
+      label(for='user-name') 名字：
+        span.formerror(ng-show="userCreation.userName.$error.required") 待填
+      input.form-control(type='text' id='user-name' name='userNickname' placeholder='输入昵称' data-ng-model='user.name' required)
+    .form-group
+      label(for='user-password') 密码：
+        span.formerror(ng-show="userCreation.userPassword.$error.required") 待填
+      input.form-control(type='text' id='user-email' name='userPassword' placeholder='初始密码' data-ng-model='user.auth.password' required)
 
 .modal-footer
-  button.btn.btn-primary(data-ng-click='ok()') 确定
+  button.btn.btn-primary(data-ng-click='ok()' data-ng-disabled="userCreation.$invalid") 确定
   button.btn.btn-warning(data-ng-click='cancel()') 取消

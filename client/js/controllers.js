@@ -11,10 +11,15 @@ ra.controller('NavBarController', [
         templateUrl: '/tpls/user/new.html',
         controller: [
           '$scope', '$http', function($scope, $http) {
+            $scope.user = {
+              name: '',
+              auth: {
+                email: '',
+                password: ''
+              }
+            };
             $scope.ok = function() {
-              return $http.post('/users/add', {
-                name: '无名'
-              }).success(function(data, status, headers, config) {
+              return $http.post('/users/add', $scope.user).success(function(data, status, headers, config) {
                 var t;
                 t = [data, status, headers, config];
                 return modal.close('ok');

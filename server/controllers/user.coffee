@@ -20,14 +20,18 @@ module.exports = (app, config) ->
 
   app.use route.post '/users/add', -->
     console.log "about to route: POST /users/add"
+    debugger
     body = yield parse @
 
     console.log "user body: #{util.inspect body}"
 
     user = new User body
-    user.name = 'noname' unless user.name
+
     user.save = thunkify(user.save)
-    yield user.save()
+    save_result = yield user.save()
+
+    console.log "save_result: #{util.inspect save_result}"
+
     @status = 201
     @body = user
 

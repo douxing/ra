@@ -11,7 +11,7 @@ body {
 * {
   box-sizing: border-box;
 }
-.all-in-viewport {
+.all-in-one {
   position: absolute;
   top: 50px;
   right: 0;

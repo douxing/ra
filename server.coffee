@@ -15,10 +15,8 @@ app.use (next) -->
     @app.emit 'app.error', err, this
     if err.name is 'ValidationError'
       return @status = 400
-
     @status = err.status or 500
   
-
 app.on 'app.error', (err) ->
   console.error "app.error: #{err}"
 

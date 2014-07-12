@@ -36,14 +36,17 @@ module.exports = (app, config) ->
     console.log "about to route: POST /matchdays/#{matchday_id}/update_score"
     matchday = yield Matchday.findOne({_id: ObjectId(matchday_id)}).exec()
     body = yield parse @
-    body.score = parseFloat body.score.trim() if body.score
+    body.score = parseFloat body.score if body.score
     console.log "matchday body: #{util.inspect body} \nmatchday: #{util.inspect matchday}"
     index = undefined
     for obj, i in matchday.scores
       if obj.player.toString() is body.player
         index = i
         break
-    if index # found
+    
+    console.log "index = #{index}"
+    debugger
+    if index? # found
       if body.score
         matchday.scores[index].score = body.score
       else
@@ -53,6 +56,8 @@ module.exports = (app, config) ->
         matchday.scores.push
           player: ObjectId(body.player)
           score: body.score
+
+    console.log "after matchday body: #{util.inspect body} \nmatchday: #{util.inspect matchday}"      
       
     matchday.save = thunkify(matchday.save)
     yield matchday.save()

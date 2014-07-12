@@ -6,9 +6,13 @@ ra.controller 'NavBarController', [
       modal = $modal.open
         templateUrl: '/tpls/user/new.html'
         controller: ['$scope', '$http', ($scope, $http) ->
+          $scope.user = 
+            name: ''
+            auth:
+              email: ''
+              password: ''
           $scope.ok = ->
-            $http.post '/users/add', 
-              name: '无名'
+            $http.post '/users/add', $scope.user
             .success (data, status, headers, config) ->
               t = [data, status, headers, config]
               modal.close 'ok'
