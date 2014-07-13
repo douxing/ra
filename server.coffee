@@ -1,4 +1,5 @@
 koa = require 'koa'
+router = require 'koa-router'
 app = koa()
 
 configObj = 
@@ -21,6 +22,8 @@ app.on 'app.error', (err) ->
   console.error "app.error: #{err}"
 
 # routes
+app.use router app
+
 require('./server/controllers/user')(app, configObj)
 require('./server/controllers/matchday')(app, configObj)
 

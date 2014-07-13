@@ -162,11 +162,13 @@ ra.config([
 ]);
 
 ra.run([
-  '$rootScope', '$location', function($rootScope, $location) {
+  '$rootScope', '$location', 'UserService', function($rootScope, $location, UserService) {
+    var reload;
     $rootScope.rootCapsule = {
       state_changing: false,
       edit: false
     };
+    reload = UserService.reload();
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       var t;
       t = [event, toState, toParams, fromState, fromParams];

@@ -120,10 +120,13 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 
 ]
 
-ra.run ['$rootScope', '$location', ($rootScope, $location) ->
+ra.run ['$rootScope', '$location', 'UserService', ($rootScope, $location, UserService) ->
   $rootScope.rootCapsule =
     state_changing: false
     edit: false
+
+  reload = UserService.reload()
+  
     # users: []
     # matchdays: []
 
