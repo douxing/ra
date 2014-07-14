@@ -4,7 +4,7 @@ var ra;
 ra = angular.module('ra');
 
 ra.controller('NavBarController', [
-  '$scope', '$state', '$modal', function($scope, $state, $modal) {
+  '$scope', '$state', '$modal', 'UserService', function($scope, $state, $modal, UserService) {
     $scope.addUser = function() {
       var modal;
       modal = $modal.open({
@@ -83,8 +83,48 @@ ra.controller('NavBarController', [
         manage: manage
       });
     };
-    return $scope.viewLast12 = function() {
+    $scope.viewLast12 = function() {
       return $state.go('last12');
+    };
+    return $scope.signin = function() {
+      var modal;
+      modal = $modal.open({
+        templateUrl: '/tpls/user/signin.html',
+        controller: [
+          '$scope', '$http', function($scope, $http) {
+            $scope.user = {
+              auth: {
+                email: '',
+                password: ''
+              }
+            };
+            $scope.ok = function() {
+              return $http.post('/users/signin', $scope.user).success(function(data, status, headers, config) {
+                var t;
+                t = [data, status, headers, config];
+                UserService.signin(data);
+                return modal.close('ok');
+              }).error(function(data, status, headers, config) {
+                var t;
+                t = [data, status, headers, config];
+                UserService.signout();
+                return modal.dismiss('error');
+              });
+            };
+            return $scope.cancel = function() {
+              return modal.dismiss('cancel');
+            };
+          }
+        ],
+        backdrop: 'static'
+      });
+      return modal.result.then(function() {
+        return $state.transitionTo('last12', {}, {
+          reload: true,
+          inherit: true,
+          notify: true
+        });
+      }, function() {});
     };
   }
 ]);

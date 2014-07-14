@@ -49,7 +49,7 @@ UserSchema.pre 'save', (next) ->
  
 UserSchema.method {
   authenticate: (plainText) ->
-    UserModel.encryptPassword plainText, @salt
+    @auth.hashed_password is UserModel.encryptPassword plainText, @auth.salt
 } 
 
 UserSchema.static {

@@ -28,13 +28,13 @@ html
               li: a(data-ng-click='addUser()') 新球员
               li: a(data-ng-click='addMatchday()') 新比赛日
         ul.nav.navbar-nav.navbar-right(data-ng-hide="stateChanging")
-          li(data-ng-hide="userService.id" data-ui-sref-active="active"): a(data-ui-sref="signin") 登录
-          li.dropdown
+          li(data-ng-show='!rootCapsule.current_user._id'): a(data-ng-click="signin()") 登录
+          li(data-ng-show='!!rootCapsule.current_user._id').dropdown
             a.dropdown-toggle(href="#" data-toggle="dropdown")
-              span 登录
-                b.caret
+              span(data-ng-bind='rootCapsule.current_user.name')
+              b.caret
             ul.dropdown-menu
-              li: a(data-ng-click="confirmSignout()") 注销
+              li: a(data-ng-click="signout()") 注销
 
 
 

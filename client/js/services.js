@@ -7,9 +7,37 @@ ra.factory('UserService', [
   '$http', function($http) {
     var sdo;
     return sdo = {
-      id: null,
+      _id: null,
       name: '',
-      reload: function() {}
+      auth: {
+        email: '',
+        role: ''
+      },
+      reload: function() {
+        return $http.get('/users/current_user').then(function(res) {
+          var data;
+          sdo.signout();
+          data = res.data;
+          sdo._id = data._id;
+          if (data._id) {
+            sdo.name = data.name;
+            sdo.auth.email = data.auth.email;
+            return sdo.auth.role = data.auth.role;
+          }
+        });
+      },
+      signin: function(data) {
+        sdo._id = data._id;
+        sdo.name = data.name;
+        sdo.auth.email = data.auth.email;
+        return sdo.auth.role = data.auth.role;
+      },
+      signout: function() {
+        sdo._id = null;
+        sdo.name = '';
+        sdo.auth.email = '';
+        return sdo.auth.role = '';
+      }
     };
   }
 ]);

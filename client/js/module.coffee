@@ -1,7 +1,8 @@
 ra = angular.module 'ra', ['ui.bootstrap', 'ui.router', 'ngGrid']
 
 ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterProvider) ->
-  shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>";
+  shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>"
+  guestTemplate = "<div class='container'><div class='jumbotron text-center'><p>请登录</p></div></div>"
   $urlRouterProvider.otherwise "/"
 
   $stateProvider.state 'index',
@@ -14,6 +15,11 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
             $state.go 'matches'
           , 0
         ]
+  .state 'guest',
+    url: '/guest'
+    views:
+      'main':
+        template: guestTemplate
   .state "matches", 
     url: "/matches/:manage"
     resolve:
@@ -120,19 +126,23 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 
 ]
 
-ra.run ['$rootScope', '$location', 'UserService', ($rootScope, $location, UserService) ->
+ra.run ['$rootScope', '$location', 'UserService', '$state', ($rootScope, $location, UserService, $state) ->
   $rootScope.rootCapsule =
     state_changing: false
     edit: false
+    current_user: UserService
 
   reload = UserService.reload()
-  
-    # users: []
-    # matchdays: []
 
   $rootScope.$on '$stateChangeStart', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]
     $rootScope.rootCapsule.state_changing = true
+
+    if toState.auth
+      reload.then ->
+        unless UserService._id
+          $state.go 'guest'
+          event.preventDefault()
 
   $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]

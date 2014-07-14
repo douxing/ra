@@ -57,7 +57,7 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.method({
   authenticate: function(plainText) {
-    return UserModel.encryptPassword(plainText, this.salt);
+    return this.auth.hashed_password === UserModel.encryptPassword(plainText, this.auth.salt);
   }
 });
 

@@ -6,8 +6,9 @@ ra = angular.module('ra', ['ui.bootstrap', 'ui.router', 'ngGrid']);
 
 ra.config([
   "$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
-    var shiftTemplate;
+    var guestTemplate, shiftTemplate;
     shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>";
+    guestTemplate = "<div class='container'><div class='jumbotron text-center'><p>请登录</p></div></div>";
     $urlRouterProvider.otherwise("/");
     return $stateProvider.state('index', {
       url: '/',
@@ -21,6 +22,13 @@ ra.config([
               }, 0);
             }
           ]
+        }
+      }
+    }).state('guest', {
+      url: '/guest',
+      views: {
+        'main': {
+          template: guestTemplate
         }
       }
     }).state("matches", {
@@ -162,17 +170,26 @@ ra.config([
 ]);
 
 ra.run([
-  '$rootScope', '$location', 'UserService', function($rootScope, $location, UserService) {
+  '$rootScope', '$location', 'UserService', '$state', function($rootScope, $location, UserService, $state) {
     var reload;
     $rootScope.rootCapsule = {
       state_changing: false,
-      edit: false
+      edit: false,
+      current_user: UserService
     };
     reload = UserService.reload();
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       var t;
       t = [event, toState, toParams, fromState, fromParams];
-      return $rootScope.rootCapsule.state_changing = true;
+      $rootScope.rootCapsule.state_changing = true;
+      if (toState.auth) {
+        return reload.then(function() {
+          if (!UserService._id) {
+            $state.go('guest');
+            return event.preventDefault();
+          }
+        });
+      }
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
       var t;

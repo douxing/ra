@@ -10,15 +10,17 @@ ObjectId = mongoose.Types.ObjectId
 Matchday = require "#{models_path}/matchday"
 User     = require "#{models_path}/user"
 
+{authenticate_action, authorize_action} = require('./session')
+
 module.exports = (app, config) ->
   console.log 'about to add routes for matchdays...'
 
-  app.get '/matchdays', -->
+  app.get '/matchdays', authenticate_action, -->
     console.log "about to route: GET /matchdays"
     matchdays = yield Matchday.find().exec()
     @body = matchdays
 
-  app.post '/matchdays/add', -->
+  app.post '/matchdays/add', authenticate_action, authorize_action, -->
     console.log "about to route: POST matchdays/add"
     body = yield parse @
 
@@ -31,7 +33,7 @@ module.exports = (app, config) ->
     @status = 201
     @body = matchday
 
-  app.post '/matchdays/:matchday_id/update_score', (next) -->
+  app.post '/matchdays/:matchday_id/update_score', authenticate_action, authorize_action, -->
     console.log "about to route: POST /matchdays/#{util.inspect @params}/update_score"
     matchday = yield Matchday.findOne({_id: ObjectId(@params.matchday_id)}).exec()
     body = yield parse @
