@@ -56,10 +56,10 @@ module.exports = (app, config) ->
       @status = 404
       @session.current_user_id = null
 
-  app.post '/users/signout', -->
-    console.log "about to route: POST /users/signin"
-    @status = 200
+  app.delete '/users/signout', -->
+    console.log "about to route: POST /users/signout"
     @session.current_user_id = null
+    @status = 200
 
   app.get '/users/current_user', -->
     console.log "about to route: users/current_user"

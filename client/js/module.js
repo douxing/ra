@@ -2,7 +2,7 @@
 var ra,
   __slice = [].slice;
 
-ra = angular.module('ra', ['ui.bootstrap', 'ui.router', 'ngGrid']);
+ra = angular.module('ra', ['ui.bootstrap', 'ui.router', 'ngGrid', 'ngCookies']);
 
 ra.config([
   "$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
@@ -182,14 +182,14 @@ ra.run([
       var t;
       t = [event, toState, toParams, fromState, fromParams];
       $rootScope.rootCapsule.state_changing = true;
-      if (toState.auth) {
-        return reload.then(function() {
+      return reload.then(function() {
+        if (toState.auth) {
           if (!UserService._id) {
             $state.go('guest');
             return event.preventDefault();
           }
-        });
-      }
+        }
+      });
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
       var t;

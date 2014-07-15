@@ -87,5 +87,29 @@ ra.controller 'NavBarController', [
       , ->
         return
 
+    $scope.signout = ->
+      modal = $modal.open
+        templateUrl: '/tpls/user/signout.html'
+        controller: ['$scope', '$http', ($scope, $http) ->
+          $scope.ok = ->
+            $http.delete '/users/signout', {}
+            .success (data, status, headers, config) ->
+              t = [data, status, headers, config]
+              UserService.signout()
+              modal.close 'ok'
+            .error (data, status, headers, config) ->
+              t = [data, status, headers, config]
+              UserService.signout()
+              modal.dismiss 'error'
+          $scope.cancel = ->
+            modal.dismiss 'cancel'
+        ]
+        backdrop: 'static'
+
+      modal.result.then ->
+        return
+      , ->
+        return
+
            
 ]

@@ -5,7 +5,10 @@ fs = require('fs');
 
 mongoose = require('mongoose');
 
-dbURI = 'mongodb://localhost/ra_dev';
+dbURI = {
+  dev: 'mongodb://localhost/ra_dev',
+  prod: 'mongodb://localhost/ra_prod'
+};
 
 dbOptions = {
   server: {
@@ -15,8 +18,8 @@ dbOptions = {
   }
 };
 
-connect = function() {
-  return mongoose.connect(dbURI, dbOptions);
+connect = function(env) {
+  return mongoose.connect(dbURI[env], dbOptions);
 };
 
 dbconnected = function() {
@@ -37,7 +40,7 @@ exports = module.exports = function(app, config) {
   mongoose.connection.on('connected', dbconnected);
   mongoose.connection.on('error', dberror);
   mongoose.connection.on('disconnected', dbdisconnected);
-  connect();
+  connect(config.env);
   models_path = "" + config.root + "/server/models";
   _ref = fs.readdirSync(models_path);
   _results = [];

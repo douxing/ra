@@ -1,13 +1,16 @@
 fs = require 'fs'
 mongoose = require 'mongoose'
-dbURI = 'mongodb://localhost/ra_dev'
+dbURI=
+  dev: 'mongodb://localhost/ra_dev'
+  prod: 'mongodb://localhost/ra_prod'
+
 dbOptions = 
     server:
       socketOptions:
         keepAlive: 1
 
-connect = ->
-  mongoose.connect dbURI, dbOptions
+connect = (env) ->
+  mongoose.connect dbURI[env], dbOptions
 
 dbconnected = ->
   console.log 'Database connected.'
@@ -24,7 +27,7 @@ exports = module.exports = (app, config) ->
   mongoose.connection.on 'connected', dbconnected
   mongoose.connection.on 'error', dberror
   mongoose.connection.on 'disconnected', dbdisconnected
-  connect()
+  connect config.env
 
   # model creation
   models_path = "#{config.root}/server/models"

@@ -4,9 +4,9 @@ var ra;
 ra = angular.module('ra');
 
 ra.factory('UserService', [
-  '$http', function($http) {
-    var sdo;
-    return sdo = {
+  '$http', '$cookies', '$cookieStore', '$state', function($http, $cookies, $cookieStore, $state) {
+    var sdo, __resetSdo;
+    sdo = {
       _id: null,
       name: '',
       auth: {
@@ -16,7 +16,7 @@ ra.factory('UserService', [
       reload: function() {
         return $http.get('/users/current_user').then(function(res) {
           var data;
-          sdo.signout();
+          __resetSdo();
           data = res.data;
           sdo._id = data._id;
           if (data._id) {
@@ -33,11 +33,23 @@ ra.factory('UserService', [
         return sdo.auth.role = data.auth.role;
       },
       signout: function() {
-        sdo._id = null;
-        sdo.name = '';
-        sdo.auth.email = '';
-        return sdo.auth.role = '';
+        var a, b;
+        a = $cookies;
+        b = $cookieStore;
+        __resetSdo();
+        return $state.go('guest', {}, {
+          reload: true,
+          inherit: true,
+          notify: true
+        });
       }
     };
+    __resetSdo = function() {
+      sdo._id = null;
+      sdo.name = '';
+      sdo.auth.email = '';
+      return sdo.auth.role = '';
+    };
+    return sdo;
   }
 ]);

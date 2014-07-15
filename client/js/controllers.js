@@ -86,7 +86,7 @@ ra.controller('NavBarController', [
     $scope.viewLast12 = function() {
       return $state.go('last12');
     };
-    return $scope.signin = function() {
+    $scope.signin = function() {
       var modal;
       modal = $modal.open({
         templateUrl: '/tpls/user/signin.html',
@@ -125,6 +125,34 @@ ra.controller('NavBarController', [
           notify: true
         });
       }, function() {});
+    };
+    return $scope.signout = function() {
+      var modal;
+      modal = $modal.open({
+        templateUrl: '/tpls/user/signout.html',
+        controller: [
+          '$scope', '$http', function($scope, $http) {
+            $scope.ok = function() {
+              return $http["delete"]('/users/signout', {}).success(function(data, status, headers, config) {
+                var t;
+                t = [data, status, headers, config];
+                UserService.signout();
+                return modal.close('ok');
+              }).error(function(data, status, headers, config) {
+                var t;
+                t = [data, status, headers, config];
+                UserService.signout();
+                return modal.dismiss('error');
+              });
+            };
+            return $scope.cancel = function() {
+              return modal.dismiss('cancel');
+            };
+          }
+        ],
+        backdrop: 'static'
+      });
+      return modal.result.then(function() {}, function() {});
     };
   }
 ]);

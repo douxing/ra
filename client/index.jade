@@ -4,22 +4,22 @@ html
     title= title
     meta(charset="utf-8")
     script(src="//cdn.bootcss.com/jquery/2.1.1/jquery.js")
-    script(src="//cdn.bootcss.com/angular.js/1.2.16/angular.js")
+    script(src="//cdn.bootcss.com/angular.js/1.2.16/angular.min.js")
   body(data-ng-app="ra")
     nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
       .container(data-ng-controller="NavBarController")
         .navbar-header
-          a.navbar-brand(ui-sref="main") 无名
-        ul.nav.navbar-nav
+          a.navbar-brand 无名
+        ul.nav.navbar-nav(data-ng-if='!!rootCapsule.current_user._id')
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown')
               span 数据
               b.caret
             ul.dropdown-menu
               li: a(data-ng-click='viewMatches()') 比赛历史
-              li: a(data-ng-click='viewMatches(true)') 比赛历史(管理)
+              li: a(data-ng-click='viewMatches(true)' data-ng-if='rootCapsule.current_user.auth.role==="optr"') 比赛历史(管理)
               li: a(data-ng-click='viewLast12()') 最近12场-古典算法
-        ul.nav.navbar-nav
+        ul.nav.navbar-nav(data-ng-if='rootCapsule.current_user._id && rootCapsule.current_user.auth.role==="optr"')
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown')
               span 操作
@@ -45,6 +45,7 @@ html
     link(rel='stylesheet' href='/css/default.css')
     link(rel='stylesheet' href='/css/table.css')
 
+    script(src="//cdn.bootcss.com/angular.js/1.2.16/angular-cookies.min.js")
     script(src="//cdn.bootcss.com/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js")
     script(src="//cdn.bootcss.com/angular-ui-router/0.2.10/angular-ui-router.js")
     script(src="//cdn.bootcss.com/ng-grid/2.0.11/ng-grid.min.js")

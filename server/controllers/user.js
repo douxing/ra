@@ -64,10 +64,10 @@ module.exports = function(app, config) {
       this.session.current_user_id = null;
     }
   });
-  app.post('/users/signout', function*() {
-    console.log("about to route: POST /users/signin");
-    this.status = 200;
+  app["delete"]('/users/signout', function*() {
+    console.log("about to route: POST /users/signout");
     this.session.current_user_id = null;
+    this.status = 200;
   });
   return app.get('/users/current_user', function*() {
     var user;

@@ -3,7 +3,14 @@ router = require 'koa-router'
 app = koa()
 
 configObj = 
-	root: __dirname
+  root: __dirname
+  env: 'dev'
+  port: 3000
+
+for arg in process.argv
+  if arg is '--prod'
+    configObj.env = 'prod'
+    configObj.port = 8080
 
 require('./server/config')(app, configObj)
 require('./server/db')(app, configObj)
@@ -27,6 +34,6 @@ app.use router app
 require('./server/controllers/user')(app, configObj)
 require('./server/controllers/matchday')(app, configObj)
 
-app.listen 3000
+app.listen configObj.port
 
-console.log 'listening on port 3000'
+console.log "listening on port #{configObj.port}"

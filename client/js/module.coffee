@@ -1,4 +1,4 @@
-ra = angular.module 'ra', ['ui.bootstrap', 'ui.router', 'ngGrid']
+ra = angular.module 'ra', ['ui.bootstrap', 'ui.router', 'ngGrid', 'ngCookies']
 
 ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterProvider) ->
   shiftTemplate = "<div class='container'><div class='jumbotron text-center'><p>Loading...</p></div></div>"
@@ -120,10 +120,6 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
           $scope
         ]
     auth: true
-
-
-
-
 ]
 
 ra.run ['$rootScope', '$location', 'UserService', '$state', ($rootScope, $location, UserService, $state) ->
@@ -138,11 +134,12 @@ ra.run ['$rootScope', '$location', 'UserService', '$state', ($rootScope, $locati
     t = [event, toState, toParams, fromState, fromParams]
     $rootScope.rootCapsule.state_changing = true
 
-    if toState.auth
-      reload.then ->
+    reload.then ->
+      if toState.auth
         unless UserService._id
           $state.go 'guest'
           event.preventDefault()
+        
 
   $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams) ->
     t = [event, toState, toParams, fromState, fromParams]

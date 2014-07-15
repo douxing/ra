@@ -1,6 +1,6 @@
 ra = angular.module 'ra'
 
-ra.factory 'UserService', ['$http', ($http) ->
+ra.factory 'UserService', ['$http', '$cookies', '$cookieStore', '$state', ($http, $cookies, $cookieStore, $state) ->
   sdo =
     _id: null
     name: ''
@@ -11,7 +11,7 @@ ra.factory 'UserService', ['$http', ($http) ->
     reload: ->
       $http.get '/users/current_user'
       .then (res) ->
-        sdo.signout()
+        __resetSdo()
         data = res.data
         sdo._id = data._id
         if data._id
@@ -26,9 +26,17 @@ ra.factory 'UserService', ['$http', ($http) ->
       sdo.auth.role = data.auth.role
 
     signout: ->
-      sdo._id = null
-      sdo.name = ''
-      sdo.auth.email = ''
-      sdo.auth.role = ''
+      a = $cookies
+      b = $cookieStore
+      __resetSdo()
+      $state.go 'guest', {}, { reload: true, inherit: true, notify: true }
+
+  __resetSdo = ->
+    sdo._id = null
+    sdo.name = ''
+    sdo.auth.email = ''
+    sdo.auth.role = ''
+
+  sdo
 
 ]
