@@ -23,13 +23,11 @@ module.exports = function(app, config) {
     var users;
     console.log("about to route: GET /users");
     users = yield User.find().select('name').exec();
-    debugger;
     this.body = users;
   });
   app.post('/users/add', authenticate_action, authorize_action, function*() {
     var body, save_result, user;
     console.log("about to route: POST /users/add");
-    debugger;
     body = yield parse(this);
     console.log("user body: " + (util.inspect(body)));
     user = new User(body);

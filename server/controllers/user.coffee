@@ -15,12 +15,10 @@ module.exports = (app, config) ->
   app.get '/users', authenticate_action, -->
     console.log "about to route: GET /users"
     users = yield User.find().select('name').exec()
-    debugger
     @body = users
 
   app.post '/users/add', authenticate_action, authorize_action, -->
     console.log "about to route: POST /users/add"
-    debugger
     body = yield parse @
 
     console.log "user body: #{util.inspect body}"

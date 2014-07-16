@@ -38,11 +38,3 @@ mongoose.connection.on 'connected', ->
   herrlich.save (error) ->
     debugger
     process.exit 0
-
-    # th = new User
-    #   name: 'TH'
-    #   password: '123456'
-    #   auth:
-    #     email: '232185476@qq.com'
-    #     role: 'optr'
-    # th.save ->

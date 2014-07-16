@@ -41,7 +41,6 @@ UserSchema.path 'auth.email'
 UserSchema.pre 'save', (next) ->
   unless @isNew then return next()
   # register the user with password
-  debugger
   if @auth.password and @auth.password.length
     next()
   else 

@@ -47,7 +47,6 @@ UserSchema.pre('save', function(next) {
   if (!this.isNew) {
     return next();
   }
-  debugger;
   if (this.auth.password && this.auth.password.length) {
     return next();
   } else {
