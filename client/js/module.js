@@ -68,8 +68,9 @@ ra.config([
           templateUrl: '/tpls/match/list.html',
           controller: [
             '$rootScope', '$state', '$stateParams', 'users', 'matchdays', '$scope', '$http', '$window', function($rootScope, $state, $stateParams, users, matchdays, $scope, $http, $window) {
-              var headerCellTemplate, matchday, originalScore, user, _i, _j, _k, _len, _len1, _len2;
+              var cellTemplate, headerCellTemplate, matchday, originalScore, user, _i, _j, _k, _len, _len1, _len2;
               headerCellTemplate = "<div class=\"ngHeaderSortColumn {{col.headerClass}}\" ng-style=\"{'cursor': col.cursor}\" ng-class=\"{ 'ngSorted': !noSortVisible }\"><div ng-click=\"col.sort($event)\" ng-class=\"'colt' + col.index\" class=\"ngHeaderText\">{{col.displayName}}</div><div class=\"ngSortButtonDown\" ng-show=\"col.showSortButtonDown()\"></div><div class=\"ngSortButtonUp\" ng-show=\"col.showSortButtonUp()\"></div><div class=\"ngSortPriority\">{{col.sortPriority}}</div><div ng-class=\"{ ngPinnedIcon: col.pinned, ngUnPinnedIcon: !col.pinned }\" ng-click=\"togglePin(col)\" ng-show=\"false\"></div></div><div ng-show=\"col.resizable\" class=\"ngHeaderGrip\" ng-click=\"col.gripClick($event)\" ng-mousedown=\"col.gripOnMouseDown($event)\"></div>";
+              cellTemplate = "<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><span ng-cell-text title='{{COL_FIELD}}'>{{COL_FIELD}}</span></div>";
               $scope.matchListCapsule = {
                 gridOptions: {
                   data: 'matchListCapsule.gridData',
@@ -97,7 +98,8 @@ ra.config([
                   displayName: "No." + (matchday.id + 1),
                   width: 80,
                   sortable: false,
-                  headerCellTemplate: headerCellTemplate
+                  headerCellTemplate: headerCellTemplate,
+                  cellTemplate: cellTemplate
                 });
               }
               for (_j = 0, _len1 = users.length; _j < _len1; _j++) {
@@ -110,8 +112,9 @@ ra.config([
                   user.matchday[matchday.id] = '';
                   if (matchday.scores[user._id] && matchday.scores[user._id].score) {
                     user.matchday[matchday.id] = matchday.scores[user._id].score;
-                  } else {
-                    user.matchday[matchday.id].score = '';
+                    if ($stateParams.manage !== 'manage') {
+                      user.matchday[matchday.id] = user.matchday[matchday.id].toFixed(2);
+                    }
                   }
                 }
                 $scope.matchListCapsule.gridData.push(user.matchday);
@@ -154,17 +157,138 @@ ra.config([
       auth: true
     }).state('last12', {
       url: '/last12',
+      resolve: {
+        users: [
+          '$http', function($http) {
+            return $http.get('/users').then(function(data) {
+              return data.data;
+            });
+          }
+        ],
+        matchdays: [
+          '$http', function($http) {
+            return $http.get('/matchdays12').then(function(data) {
+              var days, matchday, obj, scoreDict, _i, _j, _len, _len1, _ref, _ref1;
+              days = {};
+              _ref = data.data;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                matchday = _ref[_i];
+                scoreDict = {};
+                _ref1 = matchday.scores;
+                for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                  obj = _ref1[_j];
+                  scoreDict[obj.player] = obj;
+                }
+                matchday.scores = scoreDict;
+                days[matchday.id] = matchday;
+              }
+              return days;
+            });
+          }
+        ]
+      },
       views: {
         'main': {
           templateUrl: '/tpls/match/last12.html',
           controller: [
-            '$scope', function($scope) {
-              return $scope;
+            '$scope', 'users', 'matchdays', function($scope, users, matchdays) {
+              var attend_counter, base, cellTemplate, denominator, id, matchday, numerator, sum_score, t, user, weightScore, _i, _len, _results;
+              t = [$scope, users, matchdays];
+              (function($rootScope, $state, $stateParams, users, matchdays, $scope, $http, $window) {});
+              cellTemplate = "<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><span ng-cell-text title='{{COL_FIELD}}'>{{COL_FIELD}}</span></div>";
+              $scope.matchListCapsule = {
+                gridOptions: {
+                  data: 'matchListCapsule.gridData',
+                  enableRowSelection: false,
+                  columnDefs: [
+                    {
+                      field: 'player',
+                      sortable: false,
+                      enableCellEdit: false,
+                      displayName: ''
+                    }
+                  ]
+                },
+                gridData: []
+              };
+              for (id in matchdays) {
+                matchday = matchdays[id];
+                $scope.matchListCapsule.gridOptions.columnDefs.push({
+                  field: "" + id,
+                  displayName: "No." + (matchday.id + 1),
+                  sortable: false,
+                  cellTemplate: cellTemplate
+                });
+              }
+              $scope.matchListCapsule.gridOptions.columnDefs.push({
+                field: "season_score",
+                displayName: "结算分",
+                cellTemplate: cellTemplate
+              });
+              weightScore = function(score, counter) {
+                if (counter >= 7) {
+                  return score;
+                }
+                if (counter === 6) {
+                  return 0.95 * score;
+                }
+                if (counter === 5) {
+                  return 0.90 * score;
+                }
+                if (counter === 4) {
+                  return 0.8 * score;
+                }
+                if (counter === 3) {
+                  return 0.6 * score;
+                }
+                if (counter === 2) {
+                  return 0.4 * score;
+                }
+                if (counter === 1) {
+                  return 0.2 * score;
+                }
+                return 0;
+              };
+              _results = [];
+              for (_i = 0, _len = users.length; _i < _len; _i++) {
+                user = users[_i];
+                user.matchday = {
+                  player: user.name
+                };
+                attend_counter = 0;
+                numerator = 45;
+                denominator = 0;
+                for (id in matchdays) {
+                  matchday = matchdays[id];
+                  if (matchday.scores[user._id] && matchday.scores[user._id].score) {
+                    attend_counter += 1;
+                    denominator += numerator;
+                  }
+                  numerator += 5;
+                }
+                base = 1.5;
+                numerator = 45;
+                sum_score = 0.0;
+                for (id in matchdays) {
+                  matchday = matchdays[id];
+                  user.matchday[id] = '';
+                  if (matchday.scores[user._id] && matchday.scores[user._id].score) {
+                    if (attend_counter) {
+                      sum_score += (matchday.scores[user._id].score - base) * numerator / denominator;
+                    }
+                    user.matchday[id] = matchday.scores[user._id].score.toFixed(2);
+                  }
+                  numerator += 5;
+                }
+                sum_score += base;
+                user.matchday['season_score'] = weightScore(sum_score, attend_counter).toFixed(3);
+                _results.push($scope.matchListCapsule.gridData.push(user.matchday));
+              }
+              return _results;
             }
           ]
         }
-      },
-      auth: true
+      }
     });
   }
 ]);
@@ -185,7 +309,7 @@ ra.run([
       return reload.then(function() {
         if (toState.auth) {
           if (!UserService._id) {
-            $state.go('guest');
+            $state.go('last12');
             return event.preventDefault();
           }
         }

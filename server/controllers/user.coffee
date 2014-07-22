@@ -12,7 +12,7 @@ User     = require "#{models_path}/user"
 module.exports = (app, config) ->
   console.log 'about to add routes for users...'
 
-  app.get '/users', authenticate_action, -->
+  app.get '/users', -->
     console.log "about to route: GET /users"
     users = yield User.find().select('name').exec()
     @body = users

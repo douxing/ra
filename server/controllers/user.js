@@ -19,7 +19,7 @@ _ref = require('./session'), authenticate_action = _ref.authenticate_action, aut
 
 module.exports = function(app, config) {
   console.log('about to add routes for users...');
-  app.get('/users', authenticate_action, function*() {
+  app.get('/users', function*() {
     var users;
     console.log("about to route: GET /users");
     users = yield User.find().select('name').exec();

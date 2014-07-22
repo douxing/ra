@@ -20,6 +20,11 @@ module.exports = (app, config) ->
     matchdays = yield Matchday.find().exec()
     @body = matchdays
 
+  app.get '/matchdays12', -->
+    console.log "about to route: GET /matchdays12"
+    matchdays = yield Matchday.find().limit(12).sort('-id').exec()
+    @body = matchdays
+
   app.post '/matchdays/add', authenticate_action, authorize_action, -->
     console.log "about to route: POST matchdays/add"
     body = yield parse @
