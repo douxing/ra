@@ -178,29 +178,24 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
               return 0.2 * score if counter is 1
               0
 
+            denominator = 0
+            for num in [9..20]
+              denominator += 20
+
             for user in users
               user.matchday = 
                 player: user.name
 
               attend_counter = 0
-              numerator = 45
-              denominator = 0
-              for id, matchday of matchdays
-                if matchday.scores[user._id] and matchday.scores[user._id].score
-                  attend_counter += 1
-                  denominator += numerator
-                numerator += 5
-
               base = 1.5
-              numerator = 45
+              numerator = 9
               sum_score = 0.0
               for id, matchday of matchdays
                 user.matchday[id] = ''
                 if matchday.scores[user._id] and matchday.scores[user._id].score
-                  if attend_counter
-                    sum_score += (matchday.scores[user._id].score - base) * numerator / denominator
+                  sum_score += (matchday.scores[user._id].score - base) * numerator / denominator
                   user.matchday[id] = matchday.scores[user._id].score.toFixed(2)
-                numerator += 5
+                numerator += 1
               sum_score += base
               user.matchday['season_score'] = weightScore(sum_score, attend_counter).toFixed(3)
               $scope.matchListCapsule.gridData.push user.matchday
