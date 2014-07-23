@@ -195,6 +195,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                 if matchday.scores[user._id] and matchday.scores[user._id].score
                   sum_score += (matchday.scores[user._id].score - base) * numerator / denominator
                   user.matchday[id] = matchday.scores[user._id].score.toFixed(2)
+                  attend_counter += 1
                 numerator += 1
               sum_score += base
               user.matchday['season_score'] = weightScore(sum_score, attend_counter).toFixed(3)
