@@ -180,7 +180,7 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
 
             denominator = 0
             for num in [9..20]
-              denominator += 20
+              denominator += num
 
             for user in users
               user.matchday = 
