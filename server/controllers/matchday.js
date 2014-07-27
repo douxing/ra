@@ -30,7 +30,7 @@ module.exports = function(app, config) {
   app.get('/matchdays12', function*() {
     var matchdays;
     console.log("about to route: GET /matchdays12");
-    matchdays = yield Matchday.find().limit(12).sort('-id').exec();
+    matchdays = yield Matchday.find().limit(13).sort('-id').exec();
     this.body = matchdays;
   });
   app.post('/matchdays/add', authenticate_action, authorize_action, function*() {

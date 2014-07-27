@@ -156,7 +156,23 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
                 ]
               gridData: []
 
+            matchdays_this_week = {}
+            matchdays_last_week = {}
+
+            first = true
+            counter = 0
             for id, matchday of matchdays
+              if first
+                matchdays_last_week[id] = matchday
+                first = false
+              else if counter is 12
+                matchdays_this_week[id] = matchday
+              else
+                matchdays_last_week[id] = matchday
+                matchdays_this_week[id] = matchday
+              counter += 1
+
+            for id, matchday of matchdays_this_week
               $scope.matchListCapsule.gridOptions.columnDefs.push
                 field: "#{id}"
                 displayName: "No.#{matchday.id + 1}"
@@ -166,6 +182,14 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
             $scope.matchListCapsule.gridOptions.columnDefs.push
               field: "season_score"
               displayName: "结算分"
+              cellTemplate: cellTemplate
+            $scope.matchListCapsule.gridOptions.columnDefs.push
+              field: "season_rank"
+              displayName: "排名"
+              cellTemplate: cellTemplate
+            $scope.matchListCapsule.gridOptions.columnDefs.push
+              field: "season_rank_diff"
+              displayName: "成绩增减"
               cellTemplate: cellTemplate
 
             weightScore = (score, counter) ->
@@ -183,23 +207,52 @@ ra.config ["$stateProvider", "$urlRouterProvider", ($stateProvider, $urlRouterPr
               denominator += num
 
             for user in users
-              user.matchday = 
+              user.matchday_this_week = 
                 player: user.name
 
               attend_counter = 0
               base = 1.5
               numerator = 9
               sum_score = 0.0
-              for id, matchday of matchdays
-                user.matchday[id] = ''
+              for id, matchday of matchdays_this_week
+                user.matchday_this_week[id] = ''
                 if matchday.scores[user._id] and matchday.scores[user._id].score
                   sum_score += (matchday.scores[user._id].score - base) * numerator / denominator
-                  user.matchday[id] = matchday.scores[user._id].score.toFixed(2)
+                  user.matchday_this_week[id] = matchday.scores[user._id].score.toFixed(2)
                   attend_counter += 1
                 numerator += 1
               sum_score += base
-              user.matchday['season_score'] = weightScore(sum_score, attend_counter).toFixed(3)
-              $scope.matchListCapsule.gridData.push user.matchday
+              user.matchday_this_week['season_score'] = weightScore(sum_score, attend_counter)
+
+              attend_counter = 0
+              numerator = 9
+              sum_score_last_week = 0.0
+              for id, matchday of matchdays_last_week
+                if matchday.scores[user._id] and matchday.scores[user._id].score
+                  sum_score_last_week += (matchday.scores[user._id].score - base) * numerator / denominator
+                  attend_counter += 1
+                numerator += 1
+              sum_score_last_week += base
+              user.matchday_this_week['season_score_last_week'] = weightScore(sum_score_last_week, attend_counter)
+
+              $scope.matchListCapsule.gridData.push user.matchday_this_week
+
+
+            $scope.matchListCapsule.gridData.sort (m1, m2) ->
+              return m2.season_score_last_week - m1.season_score_last_week
+            counter = 1
+            for data in $scope.matchListCapsule.gridData
+              data['season_rank_last_week'] = counter
+              counter += 1            
+
+            $scope.matchListCapsule.gridData.sort (m1, m2) ->
+              return m2.season_score - m1.season_score
+            counter = 1
+            for data in $scope.matchListCapsule.gridData
+              data['season_rank'] = counter
+              data['season_rank_diff'] = data['season_rank_last_week'] - data['season_rank']
+              data['season_score'] = data['season_score'].toFixed(3)
+              counter += 1
 
         ]
 ]

@@ -192,7 +192,7 @@ ra.config([
           templateUrl: '/tpls/match/last12.html',
           controller: [
             '$scope', 'users', 'matchdays', function($scope, users, matchdays) {
-              var attend_counter, base, cellTemplate, denominator, id, matchday, num, numerator, sum_score, t, user, weightScore, _i, _j, _len, _results;
+              var attend_counter, base, cellTemplate, counter, data, denominator, first, id, matchday, matchdays_last_week, matchdays_this_week, num, numerator, sum_score, sum_score_last_week, t, user, weightScore, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1, _results;
               t = [$scope, users, matchdays];
               (function($rootScope, $state, $stateParams, users, matchdays, $scope, $http, $window) {});
               cellTemplate = "<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><span ng-cell-text title='{{COL_FIELD}}'>{{COL_FIELD}}</span></div>";
@@ -211,8 +211,25 @@ ra.config([
                 },
                 gridData: []
               };
+              matchdays_this_week = {};
+              matchdays_last_week = {};
+              first = true;
+              counter = 0;
               for (id in matchdays) {
                 matchday = matchdays[id];
+                if (first) {
+                  matchdays_last_week[id] = matchday;
+                  first = false;
+                } else if (counter === 12) {
+                  matchdays_this_week[id] = matchday;
+                } else {
+                  matchdays_last_week[id] = matchday;
+                  matchdays_this_week[id] = matchday;
+                }
+                counter += 1;
+              }
+              for (id in matchdays_this_week) {
+                matchday = matchdays_this_week[id];
                 $scope.matchListCapsule.gridOptions.columnDefs.push({
                   field: "" + id,
                   displayName: "No." + (matchday.id + 1),
@@ -223,6 +240,16 @@ ra.config([
               $scope.matchListCapsule.gridOptions.columnDefs.push({
                 field: "season_score",
                 displayName: "结算分",
+                cellTemplate: cellTemplate
+              });
+              $scope.matchListCapsule.gridOptions.columnDefs.push({
+                field: "season_rank",
+                displayName: "排名",
+                cellTemplate: cellTemplate
+              });
+              $scope.matchListCapsule.gridOptions.columnDefs.push({
+                field: "season_rank_diff",
+                displayName: "成绩增减",
                 cellTemplate: cellTemplate
               });
               weightScore = function(score, counter) {
@@ -253,29 +280,64 @@ ra.config([
               for (num = _i = 9; _i <= 20; num = ++_i) {
                 denominator += num;
               }
-              _results = [];
               for (_j = 0, _len = users.length; _j < _len; _j++) {
                 user = users[_j];
-                user.matchday = {
+                user.matchday_this_week = {
                   player: user.name
                 };
                 attend_counter = 0;
                 base = 1.5;
                 numerator = 9;
                 sum_score = 0.0;
-                for (id in matchdays) {
-                  matchday = matchdays[id];
-                  user.matchday[id] = '';
+                for (id in matchdays_this_week) {
+                  matchday = matchdays_this_week[id];
+                  user.matchday_this_week[id] = '';
                   if (matchday.scores[user._id] && matchday.scores[user._id].score) {
                     sum_score += (matchday.scores[user._id].score - base) * numerator / denominator;
-                    user.matchday[id] = matchday.scores[user._id].score.toFixed(2);
+                    user.matchday_this_week[id] = matchday.scores[user._id].score.toFixed(2);
                     attend_counter += 1;
                   }
                   numerator += 1;
                 }
                 sum_score += base;
-                user.matchday['season_score'] = weightScore(sum_score, attend_counter).toFixed(3);
-                _results.push($scope.matchListCapsule.gridData.push(user.matchday));
+                user.matchday_this_week['season_score'] = weightScore(sum_score, attend_counter);
+                attend_counter = 0;
+                numerator = 9;
+                sum_score_last_week = 0.0;
+                for (id in matchdays_last_week) {
+                  matchday = matchdays_last_week[id];
+                  if (matchday.scores[user._id] && matchday.scores[user._id].score) {
+                    sum_score_last_week += (matchday.scores[user._id].score - base) * numerator / denominator;
+                    attend_counter += 1;
+                  }
+                  numerator += 1;
+                }
+                sum_score_last_week += base;
+                user.matchday_this_week['season_score_last_week'] = weightScore(sum_score_last_week, attend_counter);
+                $scope.matchListCapsule.gridData.push(user.matchday_this_week);
+              }
+              $scope.matchListCapsule.gridData.sort(function(m1, m2) {
+                return m2.season_score_last_week - m1.season_score_last_week;
+              });
+              counter = 1;
+              _ref = $scope.matchListCapsule.gridData;
+              for (_k = 0, _len1 = _ref.length; _k < _len1; _k++) {
+                data = _ref[_k];
+                data['season_rank_last_week'] = counter;
+                counter += 1;
+              }
+              $scope.matchListCapsule.gridData.sort(function(m1, m2) {
+                return m2.season_score - m1.season_score;
+              });
+              counter = 1;
+              _ref1 = $scope.matchListCapsule.gridData;
+              _results = [];
+              for (_l = 0, _len2 = _ref1.length; _l < _len2; _l++) {
+                data = _ref1[_l];
+                data['season_rank'] = counter;
+                data['season_rank_diff'] = data['season_rank_last_week'] - data['season_rank'];
+                data['season_score'] = data['season_score'].toFixed(3);
+                _results.push(counter += 1);
               }
               return _results;
             }
