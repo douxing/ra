@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ra</title>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="underscore.js"></script>
+  <script type="text/javascript" src="angular.js"></script>
+  <script type="text/javascript" src="ra.js"></script>
+</head>
+
+<body data-ng-app="ra">
+  <div data-ng-controller="RootController">
+    <div>
+      <ul>
+        <li data-ng-repeat='ranker in rootCapsule.rankers'>
+
+
+        </li>
+      </ul>
+      <button data-ng-click='getRankers()'>获取排名</button>
+    </div>
+
+  
+  </div>
+</body>
+
+</html>
