@@ -22,7 +22,7 @@ module.exports = (app, config) ->
 
   app.get '/matchdays12', -->
     console.log "about to route: GET /matchdays12"
-    matchdays = yield Matchday.find().limit(12).sort('-id').exec()
+    matchdays = yield Matchday.find().limit(13).sort('-id').exec()
     @body = matchdays
 
   app.post '/matchdays/add', authenticate_action, authorize_action, -->
